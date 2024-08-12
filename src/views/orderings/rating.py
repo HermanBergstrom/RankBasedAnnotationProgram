@@ -40,7 +40,7 @@ class RatingScreen(OrderingScreen):
 
         self.buttons_frame = ctk.CTkFrame(master=self.root)
 
-        with open('prompts.json', 'r') as file:
+        with open('_internal/prompts.json', 'r') as file:
             prompts = json.load(file)
 
         rating_buttons = prompts['rating_buttons']
@@ -63,7 +63,8 @@ class RatingScreen(OrderingScreen):
 
         for index, button in enumerate(rating_buttons):
             ctk_button = ctk.CTkButton(
-                master=self.buttons_frame, text=button + ' (' + str(index + 1) + ')',
+                master=self.buttons_frame, text=button +
+                ' (' + str(index + 1) + ')',
                 width=160, height=40, command=lambda index=index: self.submit(index),
                 font=('Helvetica bold', 20))
 
@@ -189,7 +190,8 @@ class RatingScreen(OrderingScreen):
             if self.scroll_allowed:
                 self.progress_bar.grid(
                     row=3, column=0, columnspan=2, sticky="N", pady=5)
-                self.images = [[key, self.file_2_CTkImage(key), 0]]
+                ctk_imgs = self.file_2_CTkImage(key)
+                self.images = [[key, ctk_imgs, len(ctk_imgs)//2]]
                 self.update_images()
                 self.progress_bar.grid_forget()
                 self.progress_bar_progress = 0

@@ -318,8 +318,11 @@ class MultiOrderingScreen(OrderingScreen):
             self.progress_bar.grid(
                 row=2, column=0, columnspan=2, sticky="N", pady=5)
 
-            self.images = [[img, self.file_2_CTkImage(img), 0]
-                           for img in keys]
+            new_imgs = []
+            for img in keys:
+                ctk_imgs = self.file_2_CTkImage(img)
+                new_imgs.append([img, ctk_imgs, len(ctk_imgs)//2])
+            self.images = new_imgs
 
             self.update_images()
             self.progress_bar.grid_remove()
