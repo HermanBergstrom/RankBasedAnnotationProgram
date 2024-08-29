@@ -743,28 +743,36 @@ class HybridTrueSkill (SortingAlgorithm):
         Args:
             user_id: The ID of the user.
         """
+        # TODO: Add variable threshold for exclusion (v > threshold) as well as
+        # standard deviation for TS
+
         results = {
             k: self.rating_to_mu(v) for k,
-            v in self.sort_alg.get_user_result("hybrid").items() if v > 1}
+            v in self.sort_alg.get_user_result("hybrid").items()}  # if v > 1}
+
+        sigma = 5
 
         self.sort_alg = TrueSkill(
             results.keys(),
             comparison_size=self.comparison_size,
-            comparison_max=len(results.keys()) * 4, initial_mus=results)
+            comparison_max=800,  # len(results.keys()) * 4,
+            initial_mus=results, initial_std=sigma)
         self.is_rating = False
 
     def rating_to_mu(self, rating: int) -> float:
         """
         Convert a rating to the TrueSkill mu value.
 
-        Args:
+        Args:s
             rating: The rating value.
 
         Returns:
             The corresponding mu value.
         """
         # With mu = 25 and 1/2 standard deviation spacing
-        return 25 + ((rating - 3) * 2 + 1) / 4 * 8.333
+        # TODO: Now assumes a 5 rating scale, could be generalized to more/less granular
+        # scales
+        return 25 + ((rating - 2) * 2) / 4 * 8.333
 
     def get_comparison_count(self) -> int:
         """

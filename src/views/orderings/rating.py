@@ -124,6 +124,10 @@ class RatingScreen(OrderingScreen):
 
         self.back_button.place(x=20, y=20)
 
+        self.progress_bar.grid(
+            row=3, column=0, columnspan=2, sticky="N", pady=5)
+        self.progress_bar.grid_remove()
+
         self.timer_after = self.root.after(1000, self.update_time)
 
         if not self.is_finished_check():
@@ -188,12 +192,11 @@ class RatingScreen(OrderingScreen):
             self.update_images()
             self.root.update()
             if self.scroll_allowed:
-                self.progress_bar.grid(
-                    row=3, column=0, columnspan=2, sticky="N", pady=5)
+                self.progress_bar.grid()
                 ctk_imgs = self.file_2_CTkImage(key)
                 self.images = [[key, ctk_imgs, len(ctk_imgs)//2]]
                 self.update_images()
-                self.progress_bar.grid_forget()
+                self.progress_bar.grid_remove()
                 self.progress_bar_progress = 0
             if self.prev_sort_alg is not None:
                 self.undo_label.place(x=20, y=70)
