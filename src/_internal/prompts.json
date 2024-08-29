@@ -1,8 +1,20 @@
 {
-    "instruction_prompt":"Every annotation is saved immediately, and you can quit the program at any time and pick up where you left off. \n \n Make sure you have read and understood the instructions before you begin. \n \n Reach out to us if you have any questions, or if you were to encounter a bug.",
-    "dir_not_found":"Could not find source directory. \n Please provide the directory where\n the images are located.",
-    "ranking_buttons":["A much more severe","A more severe","A & B equal","B more severe","B much more severe"],
-    "rating_prompt":"The bronchial wall thickening in the image appears to be ... ",
-    "rating_buttons":["Non-assessable","Clearly None","None","Mild","Moderate","Severe"],
-    "finished_rating":"Each Image has now been rated! \n The system will now switch to ranking."
+    "instruction_prompt": "Every annotation is saved immediately, and you can quit the program at any time and pick up where you left off. \n \n Make sure you have read and understood the instructions before you begin. \n \n Reach out to us if you have any questions, or if you were to encounter a bug.",
+    "dir_not_found": "Could not find source directory. \n Please provide the directory where\n the images are located.",
+    "ranking_buttons": [
+        "A much more severe",
+        "A more severe",
+        "A & B equal",
+        "B more severe",
+        "B much more severe"
+    ],
+    "rating_prompt": "The bronchial wall thickening in the image appears to be ... ",
+    "rating_buttons": [
+        "None",
+        "Subtle",
+        "Mild",
+        "Moderate",
+        "Severe"
+    ],
+    "finished_rating": "Each Image has now been rated! \n The system will now switch to ranking."
 }
