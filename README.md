@@ -12,15 +12,15 @@ Documentation of the source code can be found <a href="https://hermanbergstrom.g
 ## Screenshots of the program
 
 
-### Main Menu
+### Main menu
 ![](https://github.com/HermanBergstrom/RankBasedAnnotationProgram/blob/main/example_images/mainpage.png)
 
-### Pairwise Comparison
+### Pairwise comparison
 ![](https://github.com/HermanBergstrom/RankBasedAnnotationProgram/blob/main/example_images/pairwise.png)
 
-### Ordering a List of Images
+### Ordering a list of images
 ![](https://github.com/HermanBergstrom/RankBasedAnnotationProgram/blob/main/example_images/list.png)
 
-### Creating a new Annotation Project
+### Creating a new annotation project
 ![](https://github.com/HermanBergstrom/RankBasedAnnotationProgram/blob/main/example_images/new_alg.png)
 
