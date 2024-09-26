@@ -137,9 +137,13 @@ def recompute_hybridtrueskill(save: dict) -> Tuple[sa.HybridTrueSkill,
         if i_df['undone']:
             pass
         else:
+
             sort_alg.inference(i_df['user'], res, assessment)
 
             if not sort_alg.is_rating:
+                if not prev_ratings:
+                    prev_ratings = copy.deepcopy(sort_alg.sort_alg.ratings)
+
                 if i > len(sort_alg.data):
                     rmse = math.sqrt(
                         sum(
