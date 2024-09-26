@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sorting_algorithms &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utils package" href="utils.html" />
+    <link rel="prev" title="gui" href="gui.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Rank-Based Annotation Program</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gui.html">gui</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sorting_algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sorting_algorithms.DiffLevel"><code class="docutils literal notranslate"><span class="pre">DiffLevel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.DiffLevel.major"><code class="docutils literal notranslate"><span class="pre">DiffLevel.major</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.DiffLevel.none"><code class="docutils literal notranslate"><span class="pre">DiffLevel.none</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.DiffLevel.normal"><code class="docutils literal notranslate"><span class="pre">DiffLevel.normal</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.change_to_trueskill"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.change_to_trueskill()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.comparison_is_available"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.comparison_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.get_comparison"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.get_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.get_comparison_count"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.get_comparison_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.get_comparison_max"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.get_comparison_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.get_result"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.get_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.inference"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.is_finished"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.is_finished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.HybridTrueSkill.rating_to_mu"><code class="docutils literal notranslate"><span class="pre">HybridTrueSkill.rating_to_mu()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting_algorithms.MergeSort"><code class="docutils literal notranslate"><span class="pre">MergeSort</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.comparison_is_available"><code class="docutils literal notranslate"><span class="pre">MergeSort.comparison_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.get_comparison"><code class="docutils literal notranslate"><span class="pre">MergeSort.get_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.get_comparison_count"><code class="docutils literal notranslate"><span class="pre">MergeSort.get_comparison_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.get_comparison_max"><code class="docutils literal notranslate"><span class="pre">MergeSort.get_comparison_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.get_result"><code class="docutils literal notranslate"><span class="pre">MergeSort.get_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.inference"><code class="docutils literal notranslate"><span class="pre">MergeSort.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.MergeSort.is_finished"><code class="docutils literal notranslate"><span class="pre">MergeSort.is_finished()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.comparison_is_available"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.comparison_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.get_comparison"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.get_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.get_comparison_count"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.get_comparison_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.get_comparison_max"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.get_comparison_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.get_result"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.get_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.get_user"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.get_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.get_user_result"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.get_user_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.inference"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.RatingAlgorithm.is_finished"><code class="docutils literal notranslate"><span class="pre">RatingAlgorithm.is_finished()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.comparison_is_available"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.comparison_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.get_comparison"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.get_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.get_comparison_count"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.get_comparison_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.get_comparison_max"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.get_comparison_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.get_result"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.get_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.inference"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.SortingAlgorithm.is_finished"><code class="docutils literal notranslate"><span class="pre">SortingAlgorithm.is_finished()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting_algorithms.TrueSkill"><code class="docutils literal notranslate"><span class="pre">TrueSkill</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.comparison_is_available"><code class="docutils literal notranslate"><span class="pre">TrueSkill.comparison_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.get_comparison"><code class="docutils literal notranslate"><span class="pre">TrueSkill.get_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.get_comparison_count"><code class="docutils literal notranslate"><span class="pre">TrueSkill.get_comparison_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.get_comparison_max"><code class="docutils literal notranslate"><span class="pre">TrueSkill.get_comparison_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.get_result"><code class="docutils literal notranslate"><span class="pre">TrueSkill.get_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.inference"><code class="docutils literal notranslate"><span class="pre">TrueSkill.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.intervals_overlap"><code class="docutils literal notranslate"><span class="pre">TrueSkill.intervals_overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.is_finished"><code class="docutils literal notranslate"><span class="pre">TrueSkill.is_finished()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting_algorithms.TrueSkill.update_overlap_matrix"><code class="docutils literal notranslate"><span class="pre">TrueSkill.update_overlap_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">views package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">widgets package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Rank-Based Annotation Program</a></li>
+      <li class="breadcrumb-item active">sorting_algorithms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sorting_algorithms.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-sorting_algorithms">
+<span id="sorting-algorithms"></span><h1>sorting_algorithms<a class="headerlink" href="#module-sorting_algorithms" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sorting_algorithms.DiffLevel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiffLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#DiffLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.DiffLevel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sorting_algorithms.DiffLevel.major">
+<span class="sig-name descname"><span class="pre">major</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#sorting_algorithms.DiffLevel.major" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sorting_algorithms.DiffLevel.none">
+<span class="sig-name descname"><span class="pre">none</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#sorting_algorithms.DiffLevel.none" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sorting_algorithms.DiffLevel.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#sorting_algorithms.DiffLevel.normal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HybridTrueSkill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sorting_algorithms.SortingAlgorithm" title="sorting_algorithms.SortingAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SortingAlgorithm</span></code></a></p>
+<p>Implementation of the rating and TrueSkill hybrid algorithm</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.change_to_trueskill">
+<span class="sig-name descname"><span class="pre">change_to_trueskill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.change_to_trueskill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.change_to_trueskill" title="Link to this definition"></a></dt>
+<dd><p>Change the algorithm to use the TrueSkill method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.comparison_is_available">
+<span class="sig-name descname"><span class="pre">comparison_is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.comparison_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.comparison_is_available" title="Link to this definition"></a></dt>
+<dd><p>Check if a comparison is available for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if a comparison is available, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.get_comparison">
+<span class="sig-name descname"><span class="pre">get_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.get_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.get_comparison" title="Link to this definition"></a></dt>
+<dd><p>Get a comparison for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the key of the item to be compared by the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.get_comparison_count">
+<span class="sig-name descname"><span class="pre">get_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.get_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.get_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Get the number of comparisons performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of comparisons performed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.get_comparison_max">
+<span class="sig-name descname"><span class="pre">get_comparison_max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.get_comparison_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.get_comparison_max" title="Link to this definition"></a></dt>
+<dd><p>Get the maximum number of comparisons allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of comparisons allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.get_result" title="Link to this definition"></a></dt>
+<dd><p>Get the result of the hybrid algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the rated items for each user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.inference" title="Link to this definition"></a></dt>
+<dd><p>Perform the inference step based on the user’s assessments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – The ID of the user.</p></li>
+<li><p><strong>key</strong> – The key of the item compared by the user.</p></li>
+<li><p><strong>rating</strong> – The rating assessed by the user to the item.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.is_finished">
+<span class="sig-name descname"><span class="pre">is_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.is_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.is_finished" title="Link to this definition"></a></dt>
+<dd><p>Check if the sorting process is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the sorting process is finished, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.HybridTrueSkill.rating_to_mu">
+<span class="sig-name descname"><span class="pre">rating_to_mu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#HybridTrueSkill.rating_to_mu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.HybridTrueSkill.rating_to_mu" title="Link to this definition"></a></dt>
+<dd><p>Convert a rating to the TrueSkill mu value.</p>
+<dl class="simple">
+<dt>Args:s</dt><dd><p>rating: The rating value.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The corresponding mu value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MergeSort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sorting_algorithms.SortingAlgorithm" title="sorting_algorithms.SortingAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SortingAlgorithm</span></code></a></p>
+<p>Implementation of the Merge Sort algorithm</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.comparison_is_available">
+<span class="sig-name descname"><span class="pre">comparison_is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.comparison_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.comparison_is_available" title="Link to this definition"></a></dt>
+<dd><p>Check if there are more comparisons available for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if there are more comparisons available, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.get_comparison">
+<span class="sig-name descname"><span class="pre">get_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.get_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.get_comparison" title="Link to this definition"></a></dt>
+<dd><p>Get the next comparison pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user making the comparison.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of two elements representing the next comparison pair.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.get_comparison_count">
+<span class="sig-name descname"><span class="pre">get_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.get_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.get_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Get the number of comparisons made so far.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of comparisons made.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.get_comparison_max">
+<span class="sig-name descname"><span class="pre">get_comparison_max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.get_comparison_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.get_comparison_max" title="Link to this definition"></a></dt>
+<dd><p>Get the maximum number of comparisons needed for the sorting process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of comparisons needed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.get_result" title="Link to this definition"></a></dt>
+<dd><p>Get the sorted result if the sorting process is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The sorted result as a list of values, or
+None if the sorting is not finished.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.inference" title="Link to this definition"></a></dt>
+<dd><p>Perform the inference step based on the user’s choices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – The ID of the user.</p></li>
+<li><p><strong>keys</strong> – The keys of the items compared by the user.</p></li>
+<li><p><strong>diff_lvls</strong> – The difference levels asessed by the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.MergeSort.is_finished">
+<span class="sig-name descname"><span class="pre">is_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#MergeSort.is_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.MergeSort.is_finished" title="Link to this definition"></a></dt>
+<dd><p>Check if the sorting process is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the sorting process is finished, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RatingAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sorting_algorithms.SortingAlgorithm" title="sorting_algorithms.SortingAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SortingAlgorithm</span></code></a></p>
+<p>Implementation of the rating algorithm</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.comparison_is_available">
+<span class="sig-name descname"><span class="pre">comparison_is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.comparison_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.comparison_is_available" title="Link to this definition"></a></dt>
+<dd><p>Check if a comparison is available for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if a comparison is available, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.get_comparison">
+<span class="sig-name descname"><span class="pre">get_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.get_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.get_comparison" title="Link to this definition"></a></dt>
+<dd><p>Get a comparison for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the key of the item to be rated by the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.get_comparison_count">
+<span class="sig-name descname"><span class="pre">get_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.get_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.get_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Get the number of comparisons performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of comparisons performed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.get_comparison_max">
+<span class="sig-name descname"><span class="pre">get_comparison_max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.get_comparison_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.get_comparison_max" title="Link to this definition"></a></dt>
+<dd><p>Get the maximum number of comparisons allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of comparisons allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.get_result" title="Link to this definition"></a></dt>
+<dd><p>Get the result of the rating algorithm for all users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the rated items for each user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.get_user">
+<span class="sig-name descname"><span class="pre">get_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.get_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.get_user" title="Link to this definition"></a></dt>
+<dd><p>Get the user’s dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dictionary containing the user’s data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.get_user_result">
+<span class="sig-name descname"><span class="pre">get_user_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.get_user_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.get_user_result" title="Link to this definition"></a></dt>
+<dd><p>Get the result of the rating algorithm for a specific user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the rated items for the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.inference" title="Link to this definition"></a></dt>
+<dd><p>Perform the inference step based on the user’s choices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – The ID of the user.</p></li>
+<li><p><strong>keys</strong> – The keys of the items compared by the user.</p></li>
+<li><p><strong>diff_lvls</strong> – The difference levels asessed by the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.RatingAlgorithm.is_finished">
+<span class="sig-name descname"><span class="pre">is_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#RatingAlgorithm.is_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.RatingAlgorithm.is_finished" title="Link to this definition"></a></dt>
+<dd><p>Check if the sorting process is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False (the rating algorithm never finishes)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SortingAlgorithm</span></span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for sorting algorithms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.comparison_is_available">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">comparison_is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.comparison_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.comparison_is_available" title="Link to this definition"></a></dt>
+<dd><p>Checks if a comparison is available for the given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – the ID of the user that is to perform the comparison.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean value indicating whether a comparison is available.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.get_comparison">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.get_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.get_comparison" title="Link to this definition"></a></dt>
+<dd><p>Fetches a new comparison based on the state of the sorting algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – the ID of the user that is to perform the comparison.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list containing the keys of the elements that are to be compared.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.get_comparison_count">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.get_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.get_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Returns the total number of comparisons performed by the
+sorting algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the number of comparisons performed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.get_comparison_max">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_comparison_max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.get_comparison_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.get_comparison_max" title="Link to this definition"></a></dt>
+<dd><p>Returns the maximum number of comparisons allowed
+by the sorting algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the maximum number of comparisons allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.get_result">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.get_result" title="Link to this definition"></a></dt>
+<dd><p>Returns the current result of the sorting algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the result of the sorting algorithm.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.inference">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#sorting_algorithms.DiffLevel" title="sorting_algorithms.DiffLevel"><span class="pre">DiffLevel</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.inference" title="Link to this definition"></a></dt>
+<dd><p>Updates the algorithms estimated ordering based on the
+results of a comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – the ID of the user that has performed the comparison.</p></li>
+<li><p><strong>keys</strong> – an ordered list of the keys which the user compared.</p></li>
+<li><p><strong>diff_lvls</strong> – a list containing the DiffLevels of adjacent</p></li>
+<li><p><strong>keys.</strong> (<em>elements in</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.SortingAlgorithm.is_finished">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#SortingAlgorithm.is_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.SortingAlgorithm.is_finished" title="Link to this definition"></a></dt>
+<dd><p>Checks if the sorting algorithm has finished sorting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a boolean value indicating whether the sorting algorithm
+has finished.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrueSkill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_mus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_comparisons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">same_comp_amount</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sorting_algorithms.SortingAlgorithm" title="sorting_algorithms.SortingAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SortingAlgorithm</span></code></a></p>
+<p>Implementation of the TrueSkill algorithm</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.comparison_is_available">
+<span class="sig-name descname"><span class="pre">comparison_is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.comparison_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.comparison_is_available" title="Link to this definition"></a></dt>
+<dd><p>Check if a comparison is available for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if a comparison is available, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.get_comparison">
+<span class="sig-name descname"><span class="pre">get_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.get_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.get_comparison" title="Link to this definition"></a></dt>
+<dd><p>Get the next comparison pair for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_id</strong> – The ID of the user.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the keys of the items to be compared.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.get_comparison_count">
+<span class="sig-name descname"><span class="pre">get_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.get_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.get_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Get the number of comparisons performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of comparisons performed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.get_comparison_max">
+<span class="sig-name descname"><span class="pre">get_comparison_max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.get_comparison_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.get_comparison_max" title="Link to this definition"></a></dt>
+<dd><p>Get the maximum number of comparisons allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of comparisons allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.get_result" title="Link to this definition"></a></dt>
+<dd><p>Get the sorted result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of items sorted based on the TrueSkill algorithm.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.inference" title="Link to this definition"></a></dt>
+<dd><p>Perform the inference step based on the user’s choices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – The ID of the user.</p></li>
+<li><p><strong>keys</strong> – The keys of the items compared by the user.</p></li>
+<li><p><strong>diff_lvls</strong> – The difference levels asessed by the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.intervals_overlap">
+<span class="sig-name descname"><span class="pre">intervals_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.intervals_overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.intervals_overlap" title="Link to this definition"></a></dt>
+<dd><p>Calculate the overlap between the intervals of two keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key1</strong> – The first key.</p></li>
+<li><p><strong>key2</strong> – The second key.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The overlap value between the intervals.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.is_finished">
+<span class="sig-name descname"><span class="pre">is_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.is_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.is_finished" title="Link to this definition"></a></dt>
+<dd><p>Check if the sorting process is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the sorting process is finished, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sorting_algorithms.TrueSkill.update_overlap_matrix">
+<span class="sig-name descname"><span class="pre">update_overlap_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorting_algorithms.html#TrueSkill.update_overlap_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sorting_algorithms.TrueSkill.update_overlap_matrix" title="Link to this definition"></a></dt>
+<dd><p>Update the overlap matrix with the overlap values for a specific key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – The key to update the overlap matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gui.html" class="btn btn-neutral float-left" title="gui" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

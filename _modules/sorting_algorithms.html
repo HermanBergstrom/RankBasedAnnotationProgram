@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sorting_algorithms &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">sorting_algorithms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for sorting_algorithms</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">trueskill</span> <span class="kn">import</span> <span class="n">Rating</span><span class="p">,</span> <span class="n">rate_1vs1</span>
+
+
+<div class="viewcode-block" id="DiffLevel">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.DiffLevel">[docs]</a>
+<span class="k">class</span> <span class="nc">DiffLevel</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">none</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">major</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+
+
+<div class="viewcode-block" id="SortingAlgorithm">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm">[docs]</a>
+<span class="k">class</span> <span class="nc">SortingAlgorithm</span> <span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for sorting algorithms.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SortingAlgorithm.get_comparison">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.get_comparison">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches a new comparison based on the state of the sorting algorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: the ID of the user that is to perform the comparison.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            a list containing the keys of the elements that are to be compared.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SortingAlgorithm.inference">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.inference">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">diff_lvls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DiffLevel</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the algorithms estimated ordering based on the </span>
+<span class="sd">        results of a comparison.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: the ID of the user that has performed the comparison.</span>
+<span class="sd">            keys: an ordered list of the keys which the user compared.</span>
+<span class="sd">            diff_lvls: a list containing the DiffLevels of adjacent </span>
+<span class="sd">            elements in keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SortingAlgorithm.get_result">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.get_result">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current result of the sorting algorithm.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            the result of the sorting algorithm.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SortingAlgorithm.is_finished">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.is_finished">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">is_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the sorting algorithm has finished sorting.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a boolean value indicating whether the sorting algorithm </span>
+<span class="sd">            has finished.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SortingAlgorithm.comparison_is_available">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.comparison_is_available">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">comparison_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a comparison is available for the given user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: the ID of the user that is to perform the comparison.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a boolean value indicating whether a comparison is available.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SortingAlgorithm.get_comparison_count">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.get_comparison_count">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the total number of comparisons performed by the </span>
+<span class="sd">        sorting algorithm.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            the number of comparisons performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SortingAlgorithm.get_comparison_max">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.SortingAlgorithm.get_comparison_max">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_comparison_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the maximum number of comparisons allowed </span>
+<span class="sd">        by the sorting algorithm.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            the maximum number of comparisons allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MergeSort">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort">[docs]</a>
+<span class="k">class</span> <span class="nc">MergeSort</span><span class="p">(</span><span class="n">SortingAlgorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the Merge Sort algorithm&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the MergeSort object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: The list of values to be sorted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span> <span class="o">=</span> <span class="p">[[]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="MergeSort.get_comparison">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.get_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the next comparison pair.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user making the comparison.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of two elements representing the next comparison pair.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="MergeSort.inference">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.inference">[docs]</a>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+            <span class="n">diff_lvls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the inference step based on the user&#39;s choices.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+<span class="sd">            keys: The keys of the items compared by the user.</span>
+<span class="sd">            diff_lvls: The difference levels asessed by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">smallest_i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">smallest_i</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">smallest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="n">smallest_i</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">diff_lvls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">equally_smallest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">smallest_i</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">diff_lvls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">layer</span> <span class="o">=</span> <span class="p">[</span><span class="n">smallest</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">equally_smallest</span><span class="p">]</span> <span class="o">+</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">layer</span> <span class="o">=</span> <span class="p">[</span><span class="n">smallest</span><span class="p">]</span> <span class="o">+</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">layer</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># add the remaining sublist to the next sorted layer</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+                <span class="c1"># update the current layer to the next sorted layer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span> <span class="o">=</span> <span class="p">[[]]</span>  <span class="c1"># reset the next sorted layer</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if neither of the two sublists in the current layer are empty,</span>
+            <span class="c1"># add the smallest element to the current nested</span>
+            <span class="c1"># list of the next sorted layer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">smallest</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">diff_lvls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next_sorted</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">equally_smallest</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="MergeSort.get_result">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.get_result">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the sorted result if the sorting process is finished.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The sorted result as a list of values, or </span>
+<span class="sd">            None if the sorting is not finished.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_finished</span><span class="p">():</span>
+            <span class="c1"># return the first and only sublist of the current layer if the</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="MergeSort.is_finished">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.is_finished">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the sorting process is finished.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the sorting process is finished, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_layer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MergeSort.comparison_is_available">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.comparison_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">comparison_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if there are more comparisons available for the user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if there are more comparisons available, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_finished</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MergeSort.get_comparison_count">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.get_comparison_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of comparisons made so far.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of comparisons made.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span></div>
+
+
+<div class="viewcode-block" id="MergeSort.get_comparison_max">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.MergeSort.get_comparison_max">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the maximum number of comparisons needed for the sorting process.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The maximum number of comparisons needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TrueSkill">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill">[docs]</a>
+<span class="k">class</span> <span class="nc">TrueSkill</span> <span class="p">(</span><span class="n">SortingAlgorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the TrueSkill algorithm&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+            <span class="n">comparison_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">comparison_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">initial_mus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                                       <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">random_comparisons</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">same_comp_amount</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">initial_std</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the TrueSkill object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: The list of values to be sorted.</span>
+<span class="sd">            comparison_size (int): The number of items to compare in </span>
+<span class="sd">                                   each comparison.</span>
+<span class="sd">            comparison_max (int): The maximum number of comparisons allowed.</span>
+<span class="sd">            initial_mus: A dictionary containing the initial mean ratings </span>
+<span class="sd">                         for each value.</span>
+<span class="sd">            random_comparisons: A flag indicating whether to perform random </span>
+<span class="sd">                                comparisons.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_comparisons</span> <span class="o">=</span> <span class="n">random_comparisons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">same_comp_amount</span> <span class="o">=</span> <span class="n">same_comp_amount</span>
+
+        <span class="k">if</span> <span class="n">comparison_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">*</span> <span class="mi">6</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_max</span> <span class="o">=</span> <span class="n">comparison_max</span>
+
+        <span class="k">if</span> <span class="n">initial_mus</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">initial_std</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="n">Rating</span><span class="p">(</span><span class="n">initial_mus</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">initial_std</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="n">Rating</span><span class="p">(</span><span class="n">initial_mus</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;constructing overlap matrix&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+                    <span class="n">overlap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervals_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">overlap</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">overlap</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">Rating</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">intervals_overlap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_comp_amount</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_tracker</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">=</span> <span class="n">comparison_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="TrueSkill.intervals_overlap">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.intervals_overlap">[docs]</a>
+    <span class="k">def</span> <span class="nf">intervals_overlap</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">key1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">key2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the overlap between the intervals of two keys.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key1: The first key.</span>
+<span class="sd">            key2: The second key.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The overlap value between the intervals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="n">r1_low</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key1</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span> <span class="o">-</span> <span class="n">std</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key1</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span>
+        <span class="n">r1_high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key1</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">std</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key1</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span>
+
+        <span class="n">r2_low</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span> <span class="o">-</span> <span class="n">std</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span>
+        <span class="n">r2_high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">std</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span>
+
+        <span class="n">common_gap</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r1_high</span><span class="p">,</span> <span class="n">r2_high</span><span class="p">)</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">r1_low</span><span class="p">,</span> <span class="n">r2_low</span><span class="p">)</span>
+        <span class="n">overall_gap</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">r1_high</span><span class="p">,</span> <span class="n">r2_high</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">r1_low</span><span class="p">,</span> <span class="n">r2_low</span><span class="p">))</span>
+        <span class="n">largest_span</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r1_high</span><span class="o">-</span><span class="n">r1_low</span><span class="p">,</span> <span class="n">r2_high</span><span class="o">-</span><span class="n">r2_low</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">common_gap</span> <span class="o">/</span> <span class="n">overall_gap</span> <span class="o">*</span> <span class="n">largest_span</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.update_overlap_matrix">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.update_overlap_matrix">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_overlap_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the overlap matrix with the overlap values for a specific key.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key: The key to update the overlap matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">key_i</span><span class="p">:</span>
+                <span class="n">overlap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intervals_overlap</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">key_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">overlap</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">key_i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">overlap</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.get_comparison">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.get_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the next comparison pair for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list containing the keys of the items to be compared.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">user_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_comparisons</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">comparisons</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">masked_overlap_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">[</span><span class="n">user_id</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_comp_amount</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">arg_sorted_comps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_tracker</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">arg_sorted_comps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
+                    <span class="n">masked_overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_index</span><span class="p">:</span>
+                    <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">masked_overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">max_index</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+
+                        <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">masked_overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+                        <span class="k">if</span> <span class="n">masked_overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">max_index</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_sum</span><span class="p">:</span>
+
+                            <span class="n">max_sum</span> <span class="o">=</span> <span class="n">masked_overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">max_index</span><span class="p">]</span>
+                            <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">max_index</span><span class="p">]</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span><span class="o">+</span><span class="mi">1</span><span class="p">)[</span>
+                                <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="n">ind</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">indices</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+                        <span class="n">sum_i</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">indices</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">max_sum</span> <span class="o">&lt;</span> <span class="n">sum_i</span><span class="p">:</span>
+                            <span class="n">max_sum</span> <span class="o">=</span> <span class="n">sum_i</span>
+                            <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+
+        <span class="n">keys_output</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">keys_output</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.inference">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.inference">[docs]</a>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+            <span class="n">diff_lvls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the inference step based on the user&#39;s choices.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+<span class="sd">            keys: The keys of the items compared by the user.</span>
+<span class="sd">            diff_lvls: The difference levels asessed by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">to_update</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)):</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+                <span class="n">update</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">diff_lvl</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">diff_lvl</span> <span class="ow">in</span> <span class="n">diff_lvls</span><span class="p">][</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="n">update</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="kc">True</span><span class="p">))</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="kc">False</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">update</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="kc">False</span><span class="p">))</span>
+                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">to_update</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">user_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">is_draw</span><span class="p">)</span> <span class="ow">in</span> <span class="n">to_update</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_draw</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">j</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rate_1vs1</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">j</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">drawn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">j</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rate_1vs1</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">j</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+
+            <span class="n">key_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">key_j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_comp_amount</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">comp_tracker</span><span class="p">[</span><span class="n">key_i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">comp_tracker</span><span class="p">[</span><span class="n">key_j</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">[</span><span class="n">user_id</span><span class="p">][</span><span class="n">key_i</span><span class="p">,</span> <span class="n">key_j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_comparisons</span><span class="p">[</span><span class="n">user_id</span><span class="p">][</span><span class="n">key_j</span><span class="p">,</span> <span class="n">key_i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_overlap_matrix</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.get_result">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.get_result">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the sorted result.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of items sorted based on the TrueSkill algorithm.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ratings</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.is_finished">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.is_finished">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the sorting process is finished.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the sorting process is finished, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_max</span> <span class="ow">or</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">overlap_matrix</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.comparison_is_available">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.comparison_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">comparison_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a comparison is available for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if a comparison is available, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_finished</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_comparison</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.get_comparison_count">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.get_comparison_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of comparisons performed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of comparisons performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span></div>
+
+
+<div class="viewcode-block" id="TrueSkill.get_comparison_max">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.TrueSkill.get_comparison_max">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the maximum number of comparisons allowed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The maximum number of comparisons allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_max</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RatingAlgorithm">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm">[docs]</a>
+<span class="k">class</span> <span class="nc">RatingAlgorithm</span> <span class="p">(</span><span class="n">SortingAlgorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the rating algorithm&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the RatingAlgorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: The data to be rated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_ratings</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="RatingAlgorithm.get_comparison">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.get_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a comparison for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list containing the key of the item to be rated by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;toRate&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;toRate&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.get_user">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.get_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the user&#39;s dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The dictionary containing the user&#39;s data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ratings</span><span class="p">:</span>
+            <span class="n">user_hash</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">user_id</span><span class="p">))</span> <span class="o">%</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="mi">8</span><span class="p">)</span>
+            <span class="n">to_sort</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="n">user_hash</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">to_sort</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_ratings</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;toRate&#39;</span><span class="p">:</span> <span class="n">to_sort</span><span class="p">,</span> <span class="s1">&#39;rated&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ratings</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.inference">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.inference">[docs]</a>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">rating</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the inference step based on the user&#39;s choices.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+<span class="sd">            keys: The keys of the items compared by the user.</span>
+<span class="sd">            diff_lvls: The difference levels asessed by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">user_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;toRate&#39;</span><span class="p">]:</span>
+            <span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;toRate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;rated&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rating</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.get_result">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.get_result">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the result of the rating algorithm for all users.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the rated items for each user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">({</span><span class="n">user</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_result</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="k">for</span>
+                 <span class="n">user</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ratings</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.get_user_result">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.get_user_result">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_user_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the result of the rating algorithm for a specific user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the rated items for the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;rated&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.is_finished">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.is_finished">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the sorting process is finished.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            False (the rating algorithm never finishes)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># never finished</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.comparison_is_available">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.comparison_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">comparison_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a comparison is available for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if a comparison is available, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_dict</span><span class="p">[</span><span class="s1">&#39;toRate&#39;</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.get_comparison_count">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.get_comparison_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of comparisons performed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of comparisons performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span></div>
+
+
+<div class="viewcode-block" id="RatingAlgorithm.get_comparison_max">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.RatingAlgorithm.get_comparison_max">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the maximum number of comparisons allowed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The maximum number of comparisons allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="HybridTrueSkill">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill">[docs]</a>
+<span class="k">class</span> <span class="nc">HybridTrueSkill</span> <span class="p">(</span><span class="n">SortingAlgorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of the rating and TrueSkill hybrid algorithm&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+            <span class="n">comparison_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">comparison_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the HybridTrueSkill algorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: The data to be sorted.</span>
+<span class="sd">            comparison_size: The size of each comparison.</span>
+<span class="sd">            comparison_max: The maximum number of comparisons allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">=</span> <span class="n">comparison_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_max</span> <span class="o">=</span> <span class="n">comparison_max</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span> <span class="o">=</span> <span class="n">RatingAlgorithm</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_rating</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="HybridTrueSkill.get_comparison">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.get_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a comparison for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list containing the key of the item to be compared by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison</span><span class="p">(</span><span class="s2">&quot;hybrid&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.inference">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.inference">[docs]</a>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">rating</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the inference step based on the user&#39;s assessments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+<span class="sd">            key: The key of the item compared by the user.</span>
+<span class="sd">            rating: The rating assessed by the user to the item.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">rating</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rating</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">comparison_is_available</span><span class="p">(</span><span class="s2">&quot;hybrid&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">change_to_trueskill</span><span class="p">(</span><span class="s2">&quot;hybrid&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.get_result">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.get_result">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the result of the hybrid algorithm.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the rated items for each user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.is_finished">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.is_finished">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the sorting process is finished.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the sorting process is finished, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">is_finished</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.comparison_is_available">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.comparison_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">comparison_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a comparison is available for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if a comparison is available, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">comparison_is_available</span><span class="p">(</span><span class="s2">&quot;hybrid&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.change_to_trueskill">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.change_to_trueskill">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_to_trueskill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the algorithm to use the TrueSkill method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_id: The ID of the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Add variable threshold for exclusion (v &gt; threshold) as well as</span>
+        <span class="c1"># standard deviation for TS</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_to_mu</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span>
+            <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_user_result</span><span class="p">(</span><span class="s2">&quot;hybrid&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>  <span class="c1"># if v &gt; 1}</span>
+
+        <span class="n">sigma</span> <span class="o">=</span> <span class="mi">5</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span> <span class="o">=</span> <span class="n">TrueSkill</span><span class="p">(</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+            <span class="n">comparison_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span><span class="p">,</span>
+            <span class="n">comparison_max</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>  <span class="c1"># len(results.keys()) * 4,</span>
+            <span class="n">initial_mus</span><span class="o">=</span><span class="n">results</span><span class="p">,</span> <span class="n">initial_std</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_rating</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.rating_to_mu">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.rating_to_mu">[docs]</a>
+    <span class="k">def</span> <span class="nf">rating_to_mu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rating</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a rating to the TrueSkill mu value.</span>
+
+<span class="sd">        Args:s</span>
+<span class="sd">            rating: The rating value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The corresponding mu value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># With mu = 25 and 1/2 standard deviation spacing</span>
+        <span class="c1"># TODO: Now assumes a 5 rating scale, could be generalized to more/less granular</span>
+        <span class="c1"># scales</span>
+        <span class="k">return</span> <span class="mi">25</span> <span class="o">+</span> <span class="p">((</span><span class="n">rating</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">*</span> <span class="mf">8.333</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.get_comparison_count">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.get_comparison_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of comparisons performed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of comparisons performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_count</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rating</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">total</span></div>
+
+
+<div class="viewcode-block" id="HybridTrueSkill.get_comparison_max">
+<a class="viewcode-back" href="../sorting_algorithms.html#sorting_algorithms.HybridTrueSkill.get_comparison_max">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_comparison_max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the maximum number of comparisons allowed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The maximum number of comparisons allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rating</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">total</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

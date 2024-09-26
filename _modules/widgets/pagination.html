@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>widgets.pagination &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">widgets.pagination</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for widgets.pagination</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+
+<span class="kn">import</span> <span class="nn">utils.ctk_utils</span> <span class="k">as</span> <span class="nn">ctk_utils</span>
+<span class="kn">from</span> <span class="nn">pop_outs.image_pop_out</span> <span class="kn">import</span> <span class="n">ImagePopOut</span>
+
+
+<div class="viewcode-block" id="Pagination">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination">[docs]</a>
+<span class="k">class</span> <span class="nc">Pagination</span><span class="p">(</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A widget used to display images using pagination.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTk</span><span class="p">,</span> <span class="n">master</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">src_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">images_per_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">images_per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="n">image_width</span><span class="o">=</span><span class="mi">130</span><span class="p">,</span> <span class="n">image_label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Pagination.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (CTk): The root cutom tkinter object.</span>
+<span class="sd">            master (ctk.CtkBaseClass): The parent ctk widget.</span>
+<span class="sd">            data (List[str]): A list containint the filenames of the images that are to </span>
+<span class="sd">                              be shown.</span>
+<span class="sd">            src_dir (str): The path to the directory containing the images.</span>
+<span class="sd">            images_per_row (int): The amount of images that should be shown on a single </span>
+<span class="sd">                                  row.</span>
+<span class="sd">            images_per_page (int): The amount of images that should be contained within</span>
+<span class="sd">                                   one page.</span>
+<span class="sd">            image_width (int): The width each image should have.</span>
+<span class="sd">            image_label (Optional[int]): The label the images should have in the bottom</span>
+<span class="sd">                                         left corner. Defaults to displaying the rank of</span>
+<span class="sd">                                         the elements in the provided list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">master</span> <span class="o">=</span> <span class="n">master</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_dir</span> <span class="o">=</span> <span class="n">src_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="n">images_per_page</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span> <span class="o">=</span> <span class="n">images_per_row</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_page</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="n">image_width</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_label</span> <span class="o">=</span> <span class="n">image_label</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">fg_color</span><span class="o">=</span><span class="n">master</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s1">&#39;fg_color&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_pagination_controls</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;images_frame&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;images_frame&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pagination_controls</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_changed</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Pagination.load_page">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.load_page">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the list of images corresponding to the pagenumber.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            page_number (int): The page of images that should be shown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="n">start_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="o">*</span><span class="p">(</span><span class="n">page_number</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">images_to_show</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span> <span class="n">start_index</span> <span class="o">+</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">img_src</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">images_to_show</span><span class="p">):</span>
+            <span class="n">full_img_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">img_src</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">ctk_utils</span><span class="o">.</span><span class="n">file_2_CTkImage</span><span class="p">(</span>
+                <span class="n">full_img_path</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">preview_image_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="p">)</span>
+
+            <span class="n">preview_image</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">preview_image_frame</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">preview_image</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">preview_image_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">index</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">,</span>
+                                     <span class="n">column</span><span class="o">=</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">preview_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">full_img_path</span><span class="o">=</span><span class="n">full_img_path</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_press</span><span class="p">(</span>
+                    <span class="n">event</span><span class="p">,</span> <span class="n">full_img_path</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_label</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">start_index</span> <span class="o">+</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="n">img_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">preview_image</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="n">preview_image_frame</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span>
+                    <span class="s1">&#39;fg_color&#39;</span><span class="p">))</span>
+            <span class="n">img_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">relx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rely</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;sw&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">no_images_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;No images have received this label&quot;</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+                <span class="n">width</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">320</span><span class="p">)</span>
+
+            <span class="n">no_images_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">,</span>
+                <span class="n">rowspan</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_row</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Pagination.on_image_press">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.on_image_press">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_image_press</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">full_img_path</span><span class="p">):</span>
+        <span class="n">ImagePopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">full_img_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pagination.create_pagination_controls">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.create_pagination_controls">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_pagination_controls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates the pagination control buttons and entry field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pagination_controls</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pagination_controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decrement_page</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pagination_controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">increment_page</span><span class="p">)</span>
+
+        <span class="n">vcmd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validate_number</span><span class="p">),</span> <span class="s1">&#39;%P&#39;</span><span class="p">)</span>
+
+        <span class="n">current_page_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pagination_controls</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
+            <span class="n">validatecommand</span><span class="o">=</span><span class="n">vcmd</span><span class="p">,</span>
+            <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">)</span>
+
+        <span class="n">current_page_entry</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_changed</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_page_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pagination_controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_page</span><span class="p">),</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">current_page_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_page_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pagination.validate_number">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.validate_number">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validation function used to see if entry contains an integer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): The string that is to be validated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Pagination.increment_page">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.increment_page">[docs]</a>
+    <span class="k">def</span> <span class="nf">increment_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Increases the current page number by 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">get</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_changed</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Pagination.decrement_page">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.decrement_page">[docs]</a>
+    <span class="k">def</span> <span class="nf">decrement_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decreases the current page number by 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">get</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_changed</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Pagination.page_changed">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.page_changed">[docs]</a>
+    <span class="k">def</span> <span class="nf">page_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Corrects non-compatible page numbers and loads the correct page.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">page</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">page</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_page</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_page</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_page</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">page</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previous_page_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">page</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_page</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pagination.change_data">
+<a class="viewcode-back" href="../../widgets.html#widgets.pagination.Pagination.change_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">image_label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Changes the images that the widget displays.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (List[str]): The filenames of the images that should be shown.</span>
+<span class="sd">            image_label (Optional[int]): The number that should be displayed in the</span>
+<span class="sd">                                         bottom left corner.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_page</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_page_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_page</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_label</span> <span class="o">=</span> <span class="n">image_label</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_changed</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

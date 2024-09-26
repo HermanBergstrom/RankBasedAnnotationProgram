@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gui &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">gui</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for gui</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+
+<span class="kn">from</span> <span class="nn">pop_outs.user_selection_pop_out</span> <span class="kn">import</span> <span class="n">UserSelectionPopOut</span>
+<span class="kn">from</span> <span class="nn">sorting_algorithms</span> <span class="kn">import</span> <span class="n">HybridTrueSkill</span><span class="p">,</span> <span class="n">RatingAlgorithm</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">ctk_utils</span>
+<span class="kn">from</span> <span class="nn">views.advanced_creation_menu</span> <span class="kn">import</span> <span class="n">AdvancedCreationMenu</span>
+<span class="kn">from</span> <span class="nn">views.advanced_information_page</span> <span class="kn">import</span> <span class="n">AdvancedInformationPage</span>
+<span class="kn">from</span> <span class="nn">views.menu</span> <span class="kn">import</span> <span class="n">MenuScreen</span>
+<span class="kn">from</span> <span class="nn">views.orderings.multiordering</span> <span class="kn">import</span> <span class="n">MultiOrderingScreen</span>
+<span class="kn">from</span> <span class="nn">views.orderings.pairwiseordering</span> <span class="kn">import</span> <span class="n">PairwiseOrderingScreen</span>
+<span class="kn">from</span> <span class="nn">views.orderings.rating</span> <span class="kn">import</span> <span class="n">RatingScreen</span>
+
+
+<div class="viewcode-block" id="AnnotationGui">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui">[docs]</a>
+<span class="k">class</span> <span class="nc">AnnotationGui</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Annotation GUI class for the Rank-Based Annotation application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the AnnotationGui object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ctk</span><span class="o">.</span><span class="n">set_appearance_mode</span><span class="p">(</span><span class="s1">&#39;dark&#39;</span><span class="p">)</span>
+        <span class="n">ctk</span><span class="o">.</span><span class="n">set_default_color_theme</span><span class="p">(</span><span class="s2">&quot;dark-blue&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTk</span><span class="p">()</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="mi">1500</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="mi">830</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ctk_utils</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">x</span><span class="si">%d</span><span class="s1">+</span><span class="si">%d</span><span class="s1">+</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Rank-Based Annotation&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux2&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">attributes</span><span class="p">(</span><span class="s1">&#39;-zoomed&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bindings</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="AnnotationGui.run">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs the Annotation GUI application.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">()</span>
+
+        <span class="n">UserSelectionPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_user</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.clear_screen">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.clear_screen">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the screen by destroying all child widgets and resetting column </span>
+<span class="sd">        and row configurations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_bindings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="n">binding</span><span class="p">)</span>
+
+        <span class="n">cols</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_size</span><span class="p">()</span>
+
+        <span class="c1"># Reset the column and row configurations</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">rowconfigure</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.display_menu">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.display_menu">[docs]</a>
+    <span class="k">def</span> <span class="nf">display_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the menu screen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_screen</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_screen</span> <span class="o">=</span> <span class="n">MenuScreen</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_ordering_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span>
+            <span class="n">open_user_selection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_advanced_creation_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span>
+            <span class="n">display_information_screen</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;selected_user&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_screen</span><span class="o">.</span><span class="n">display_user</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_screen</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.display_advanced_creation_menu">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.display_advanced_creation_menu">[docs]</a>
+    <span class="k">def</span> <span class="nf">display_advanced_creation_menu</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">initial_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the advanced creation menu.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            initial_settings (Optional[dict]): Dictionary containing initial values </span>
+<span class="sd">                                               for fields in the creation menu.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_screen</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_creation_menu</span> <span class="o">=</span> <span class="n">AdvancedCreationMenu</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">,</span> <span class="n">initial_settings</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_creation_menu</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.display_ordering_screen">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.display_ordering_screen">[docs]</a>
+    <span class="k">def</span> <span class="nf">display_ordering_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                                <span class="n">hybrid_transition_made</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the ordering screen based on the selected sort algorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            save_obj (dict): The save object containing the sort algorithm and </span>
+<span class="sd">            other parameters.</span>
+<span class="sd">            hybrid_transition_made (bool): A boolean indicating if a hybrid </span>
+<span class="sd">            transition has been made.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;selected_user&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_screen</span><span class="p">()</span>
+
+            <span class="n">sort_alg</span> <span class="o">=</span> <span class="n">save_obj</span><span class="p">[</span><span class="s2">&quot;sort_alg&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">HybridTrueSkill</span><span class="p">:</span>
+                <span class="n">sort_alg</span> <span class="o">=</span> <span class="n">sort_alg</span><span class="o">.</span><span class="n">sort_alg</span>
+
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">RatingAlgorithm</span><span class="p">:</span>
+                <span class="n">ordering_screen</span> <span class="o">=</span> <span class="n">RatingScreen</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span>
+                    <span class="n">selected_user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_ordering_screen</span><span class="p">,</span>
+                    <span class="n">hybrid_transition_made</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_root_binding</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">sort_alg</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">ordering_screen</span> <span class="o">=</span> <span class="n">PairwiseOrderingScreen</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_user</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reload_ordering_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_root_binding</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ordering_screen</span> <span class="o">=</span> <span class="n">MultiOrderingScreen</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_user</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reload_ordering_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_root_binding</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">ordering_screen</span><span class="o">.</span><span class="n">image_directory_located</span><span class="p">:</span>
+                <span class="n">ordering_screen</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">UserSelectionPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.display_information_screen">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.display_information_screen">[docs]</a>
+    <span class="k">def</span> <span class="nf">display_information_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;selected_user&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_screen</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">advanced_information_screen</span> <span class="o">=</span> <span class="n">AdvancedInformationPage</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_menu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_user</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">advanced_information_screen</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">UserSelectionPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.select_user">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.select_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Selects a user and updates the selected user in the menu screen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): The selected user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_screen</span><span class="o">.</span><span class="n">display_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.open_user_selection">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.open_user_selection">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_user_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens the user selection pop-up.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">UserSelectionPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.reload_ordering_screen">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.reload_ordering_screen">[docs]</a>
+    <span class="k">def</span> <span class="nf">reload_ordering_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reloads the ordering screen with the updated save object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            save_obj (dict): The updated save object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_ordering_screen</span><span class="p">(</span><span class="n">save_obj</span><span class="p">,</span> <span class="n">hybrid_transition_made</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationGui.add_root_binding">
+<a class="viewcode-back" href="../gui.html#gui.AnnotationGui.add_root_binding">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_root_binding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Binds the event to the root element while keeping track of added events.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (str): The event that is to be bound.</span>
+<span class="sd">            function (function): The function that is to be called when the event </span>
+<span class="sd">                                 occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

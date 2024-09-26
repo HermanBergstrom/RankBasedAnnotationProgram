@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils.ctk_utils &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">utils.ctk_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for utils.ctk_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+
+<div class="viewcode-block" id="file_2_CTkImage">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.file_2_CTkImage">[docs]</a>
+<span class="k">def</span> <span class="nf">file_2_CTkImage</span><span class="p">(</span><span class="n">img_src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an image file to a list of CTkImage objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img_src (str): The path to the image file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[CTkImage]: The list of CTkImage objects.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If the image file is not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.nii&#39;</span><span class="p">:</span>
+        <span class="n">ctk_imgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nib_imgs</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nib_imgs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">nib_imgs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">height</span><span class="p">:</span>
+                <span class="n">resize_factor</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">width</span><span class="p">:</span>
+                <span class="n">resize_factor</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">resize_factor</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">resize_factor</span><span class="p">),</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">resize_factor</span><span class="p">))</span>
+            <span class="n">ctk_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">(</span>
+                    <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">img</span><span class="p">))</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+                        <span class="n">new_shape</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">),</span>
+                    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">ctk_imgs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">height</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">width</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="center">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.center">[docs]</a>
+<span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTk</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the x and y coordinates to center the CTk root window.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        root (CTk): The root cutom tkinter object.</span>
+<span class="sd">        w (int): The width of the window.</span>
+<span class="sd">        h (int): The height of the window.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The x and y coordinates to center the window.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get screen width and height</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenwidth</span><span class="p">()</span>  <span class="c1"># width of the screen</span>
+    <span class="n">hs</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span>  <span class="c1"># height of the screen</span>
+
+    <span class="c1"># calculate x and y coordinates for the Tk root window</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">ws</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">hs</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">40</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+
+<div class="viewcode-block" id="remove_hover">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.remove_hover">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_hover</span><span class="p">(</span><span class="n">widget</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">):</span>
+
+    <span class="n">widget</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;&lt;Enter&gt;&quot;</span><span class="p">)</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;&lt;Leave&gt;&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">widget</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+        <span class="n">remove_hover</span><span class="p">(</span><span class="n">child</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="add_hover">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.add_hover">[docs]</a>
+<span class="k">def</span> <span class="nf">add_hover</span><span class="p">(</span><span class="n">widget</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add hover effect to the widget and its children.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (CTkBaseClass): The widget to add the hover effect to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">add_hover_to_children</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="add_hover_to_children">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.add_hover_to_children">[docs]</a>
+<span class="k">def</span> <span class="nf">add_hover_to_children</span><span class="p">(</span><span class="n">widget</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">,</span>
+                          <span class="n">child_widget</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add hover effect to the child ctk widget and its children.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget: The parent ctk widget.</span>
+<span class="sd">        child_widget: The child ctk widget to add the hover effect to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">child_widget</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Enter&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">,</span>
+                      <span class="n">color</span><span class="o">=</span><span class="n">widget</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;fg_color&quot;</span><span class="p">):</span> <span class="n">highlight</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+    <span class="n">child_widget</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+        <span class="s2">&quot;&lt;Leave&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">widget</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;fg_color&quot;</span><span class="p">):</span> <span class="n">remove_highlight</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+        <span class="n">add_hover_to_children</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="highlight">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.highlight">[docs]</a>
+<span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="n">widget</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">,</span> <span class="n">og_color</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add highlight effect to the ctk widget by changing its foreground color.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget: The ctk widget to highlight.</span>
+<span class="sd">        color: The original foreground color of the widget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gray_color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">og_color</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">10</span>
+
+    <span class="k">if</span> <span class="n">gray_color</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">gray_color</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="n">widget</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">fg_color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">gray_color</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="remove_highlight">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.remove_highlight">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_highlight</span><span class="p">(</span><span class="n">widget</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkBaseClass</span><span class="p">,</span> <span class="n">og_color</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove highlight effect from the ctk widget by restoring its original </span>
+<span class="sd">    foreground color.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget: The ctk widget to remove the highlight effect from.</span>
+<span class="sd">        color: The original foreground color of the widget.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">fg_color</span><span class="o">=</span><span class="n">og_color</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="highlight_label">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.highlight_label">[docs]</a>
+<span class="k">def</span> <span class="nf">highlight_label</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Highlight the label by adjusting its text color.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        label (CTkLabel): The widget containing the label to be highlighted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">hex</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;text_color&quot;</span><span class="p">)</span>
+
+    <span class="n">rgb</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rgb</span><span class="p">)):</span>
+        <span class="n">rgb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">50</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+    <span class="n">new_hex</span> <span class="o">=</span> <span class="s1">&#39;#</span><span class="si">{:02x}{:02x}{:02x}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text_color</span><span class="o">=</span><span class="n">new_hex</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="remove_highlight_label">
+<a class="viewcode-back" href="../../utils.html#utils.ctk_utils.remove_highlight_label">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_highlight_label</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove the highlight from the label by setting its text color to a </span>
+<span class="sd">    default value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        label (CTkLabel): The label from which to remove the highlight.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text_color</span><span class="o">=</span><span class="s2">&quot;#777777&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

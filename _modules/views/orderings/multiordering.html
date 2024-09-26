@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views.orderings.multiordering &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">views.orderings.multiordering</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for views.orderings.multiordering</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+
+<span class="kn">import</span> <span class="nn">sorting_algorithms</span> <span class="k">as</span> <span class="nn">sa</span>
+<span class="kn">from</span> <span class="nn">views.orderings.ordering</span> <span class="kn">import</span> <span class="n">OrderingScreen</span>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen">[docs]</a>
+<span class="k">class</span> <span class="nc">MultiOrderingScreen</span><span class="p">(</span><span class="n">OrderingScreen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A screen for multi-ordering.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                 <span class="n">menu_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">reload_ordering_screen</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+                 <span class="n">root_bind_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the MultiOrderingScreen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (CTkFrame): The root frame for the screen.</span>
+<span class="sd">            save_obj (dict): The save object.</span>
+<span class="sd">            menu_callback (function): The callback function for the menu.</span>
+<span class="sd">            user (str): The user name.</span>
+<span class="sd">            reload_ordering_screen (function): The function to reload the </span>
+<span class="sd">                                               ordering screen.</span>
+<span class="sd">            root_bind_callback (function): Callback function used to bind events to the</span>
+<span class="sd">                                           root element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">,</span> <span class="n">menu_callback</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span>
+                         <span class="n">reload_ordering_screen</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">root_bind_callback</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span> <span class="o">=</span> <span class="n">root_bind_callback</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">int_diff_levels</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">IntVar</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">submit_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Submit Ordering&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">280</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">motion_allowed</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MultiOrderingScreen.display">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.display">[docs]</a>
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display the multi-ordering screen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_elapsed_time_prev</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">is_finished</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">submit_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_duration_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">relx</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;ne&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">back_button</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer_after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_initialized</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_finished_check</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_new_comparison</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.init_image_frames">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.init_image_frames">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the image frames.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayed_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_frames</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span><span class="p">):</span>
+
+            <span class="n">image_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_frame</span><span class="p">)</span>
+
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+            <span class="n">displayed_image</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">displayed_image</span><span class="p">)</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                 <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+            <span class="n">left_button_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span>
+
+            <span class="n">move_left_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+                <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_left</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+                <span class="n">state</span><span class="o">=</span><span class="n">left_button_state</span><span class="p">)</span>
+            <span class="n">move_left_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">right_button_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">right_button_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span>
+
+            <span class="n">move_right_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+                <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_right</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+                <span class="n">state</span><span class="o">=</span><span class="n">right_button_state</span><span class="p">)</span>
+            <span class="n">move_right_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">image_frame</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_drag_start</span><span class="p">(</span>
+                    <span class="n">event</span><span class="p">,</span> <span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;B1-Motion&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">image_frame</span><span class="o">=</span><span class="n">image_frame</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_drag_motion</span><span class="p">(</span>
+                    <span class="n">event</span><span class="p">,</span> <span class="n">image_frame</span><span class="p">))</span>
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;ButtonRelease-1&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">image_frame</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_drag_stop</span><span class="p">(</span>
+                    <span class="n">event</span><span class="p">,</span> <span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;MouseWheel&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                             <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">image_frame</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_drag_start</span><span class="p">(</span>
+                    <span class="n">event</span><span class="p">,</span> <span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;B1-Motion&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">image_frame</span><span class="o">=</span><span class="n">image_frame</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_drag_motion</span><span class="p">(</span>
+                    <span class="n">event</span><span class="p">,</span> <span class="n">image_frame</span><span class="p">))</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;ButtonRelease-1&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">image_frame</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span>
+                <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_drag_stop</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">image_frame</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;MouseWheel&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-4&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                             <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_up</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-4&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                                 <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_up</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-5&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                             <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_down</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-5&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                                 <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_down</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">())</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;Enter&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_image_hover_idx</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;Leave&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_image_hover_idx</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.init_diff_level_buttons">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.init_diff_level_buttons">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_diff_level_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the difference level buttons.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">diff_levels_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="p">)</span>
+
+        <span class="n">image_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">diff_levels_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span><span class="p">,</span>
+            <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span> <span class="o">+</span> <span class="n">image_width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">int_diff_levels</span><span class="p">)):</span>
+            <span class="n">diff_levels_frame</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">int_diff_level</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">int_diff_levels</span><span class="p">):</span>
+
+            <span class="n">diff_level_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">diff_levels_frame</span><span class="p">)</span>
+
+            <span class="n">diff_level_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="n">r0</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkRadioButton</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">diff_level_frame</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="n">int_diff_level</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">r1</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkRadioButton</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">diff_level_frame</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="n">int_diff_level</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">r2</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkRadioButton</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="n">diff_level_frame</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="n">int_diff_level</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="n">r0</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+            <span class="n">r1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+            <span class="n">r2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+
+            <span class="n">diff_level_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="n">diff_level_frame</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>
+            <span class="n">diff_level_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">int_diff_level</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span>
+                <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">var</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">int_diff_level</span><span class="o">=</span><span class="n">int_diff_level</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">diff_level_label</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_diff_labels</span><span class="p">(</span>
+                    <span class="n">int_diff_level</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+        <span class="n">diff_levels_frame</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+            <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;fg_color&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.reset_diff_levels">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.reset_diff_levels">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset_diff_levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the difference levels to their default values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">int_diff_lvl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_diff_levels</span><span class="p">:</span>
+            <span class="n">int_diff_lvl</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.update_diff_labels">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.update_diff_labels">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_diff_labels</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">int_diff_level</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">IntVar</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the labels for the difference levels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            int_diff_level (IntVar): The difficulty level as an integer </span>
+<span class="sd">                                     variable.</span>
+<span class="sd">            label (CTkLabel): The label to update with the difficulty </span>
+<span class="sd">                              level text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">int_diff_level</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;no difference&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">int_diff_level</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;large difference&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.create_image_widget">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.create_image_widget">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_image_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a widget for displaying an image.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image_idx (int): The index of the image.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            CTkFrame: The created image widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">image_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayed_images</span><span class="p">[</span><span class="n">image_idx</span><span class="p">]</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">)</span>
+
+        <span class="n">displayed_image</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                             <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">move_left_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+        <span class="n">move_left_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+        <span class="n">move_right_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+        <span class="n">move_right_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">image_frame</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.display_new_comparison">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.display_new_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">display_new_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display a new comparison of images.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_diff_levels</span><span class="p">()</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[[</span><span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_initial_image</span><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="mi">0</span><span class="p">]</span>
+                       <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">buttons_initialized</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_diff_level_buttons</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buttons_initialized</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="n">new_imgs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">ctk_imgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_2_CTkImage</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+                <span class="n">new_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">img</span><span class="p">,</span> <span class="n">ctk_imgs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctk_imgs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">new_imgs</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_progress</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.move_left">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.move_left">[docs]</a>
+    <span class="k">def</span> <span class="nf">move_left</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move an image to the left in the comparison.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the image to move.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_diff_levels</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.move_right">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.move_right">[docs]</a>
+    <span class="k">def</span> <span class="nf">move_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move an image to the right in the comparison.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the image to move.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_diff_levels</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.on_drag_start">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.on_drag_start">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_drag_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Event handler for when dragging starts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event): The Tkinter event object.</span>
+<span class="sd">            frame (CTkFrame): The frame where the event occurred.</span>
+<span class="sd">            idx (int): The index of the image being dragged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">black_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
+            <span class="n">height</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">black_frame</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">())</span>
+
+        <span class="n">pos_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">pos_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span><span class="o">//</span><span class="mi">2</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span><span class="o">//</span><span class="mi">2</span>
+
+        <span class="n">frame_clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_image_widget</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">frame_clone</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">pos_x</span><span class="o">-</span><span class="n">dx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pos_y</span><span class="o">-</span><span class="n">dy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">drag_frame</span> <span class="o">=</span> <span class="n">frame_clone</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.allow_motion">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.allow_motion">[docs]</a>
+    <span class="k">def</span> <span class="nf">allow_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows motion after a delay.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motion_allowed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.on_drag_motion">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.on_drag_motion">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_drag_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Event handler for when dragging is in motion.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event): The Tkinter event object.</span>
+<span class="sd">            frame (CTkFrame): The frame where the event occurred.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">motion_allowed</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motion_allowed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_motion</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">drag_frame</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span><span class="o">//</span><span class="mi">2</span>
+
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">drag_frame</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span><span class="o">//</span><span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">drag_frame</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.on_drag_stop">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.on_drag_stop">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_drag_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Event handler for when dragging stops.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event): The Tkinter event object.</span>
+<span class="sd">            frame (CTkFrame): The frame where the event occurred.</span>
+<span class="sd">            idx (int): The index of the image being dragged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">drag_frame</span><span class="o">.</span><span class="n">place_forget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">black_frame</span><span class="o">.</span><span class="n">place_forget</span><span class="p">()</span>
+
+        <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">grid_location</span><span class="p">(</span>
+            <span class="n">frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">row</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">)</span> <span class="ow">or</span> <span class="n">index</span> <span class="o">==</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_frames</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+        <span class="n">width</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span>
+
+        <span class="n">relative_x</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">widget</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span> <span class="o">+</span> <span class="mi">20</span>
+
+        <span class="n">from_right_bonus</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">&gt;</span> <span class="n">index</span><span class="p">):</span>
+            <span class="n">from_right_bonus</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">image_to_move</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">relative_x</span> <span class="o">&lt;</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">from_right_bonus</span><span class="p">,</span> <span class="n">image_to_move</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">relative_x</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">width</span> <span class="o">//</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># If you are coming from above, same as lower third</span>
+            <span class="c1"># If you are coming from below, same as upper third</span>
+            <span class="k">if</span> <span class="n">from_right_bonus</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">from_right_bonus</span><span class="p">,</span> <span class="n">image_to_move</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="n">from_right_bonus</span><span class="p">,</span> <span class="n">image_to_move</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="n">from_right_bonus</span><span class="p">,</span> <span class="n">image_to_move</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_diff_levels</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MultiOrderingScreen.submit">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.submit">[docs]</a>
+    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submits the comparison.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">]</span>
+
+        <span class="n">diff_lvls</span> <span class="o">=</span> <span class="p">[</span><span class="n">sa</span><span class="o">.</span><span class="n">DiffLevel</span><span class="p">(</span><span class="n">int_diff_lvl</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+                     <span class="k">for</span> <span class="n">int_diff_lvl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_diff_levels</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">submit_comparison</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">diff_lvls</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

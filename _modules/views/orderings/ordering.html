@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views.orderings.ordering &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">views.orderings.ordering</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for views.orderings.ordering</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">import</span> <span class="nn">sorting_algorithms</span> <span class="k">as</span> <span class="nn">sa</span>
+<span class="kn">import</span> <span class="nn">utils.convergence</span> <span class="k">as</span> <span class="nn">conv</span>
+<span class="kn">import</span> <span class="nn">utils.ctk_utils</span> <span class="k">as</span> <span class="nn">ctk_utils</span>
+<span class="kn">import</span> <span class="nn">utils.saves_handler</span> <span class="k">as</span> <span class="nn">saves_handler</span>
+<span class="kn">from</span> <span class="nn">pop_outs.image_directory_pop_out</span> <span class="kn">import</span> <span class="n">ImageDirectoryPopOut</span>
+<span class="kn">from</span> <span class="nn">pop_outs.is_finished_pop_out</span> <span class="kn">import</span> <span class="n">IsFinishedPopOut</span>
+<span class="kn">from</span> <span class="nn">pop_outs.switching_modes_pop_out</span> <span class="kn">import</span> <span class="n">SwitchingModesPopOut</span>
+
+
+<div class="viewcode-block" id="OrderingScreen">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen">[docs]</a>
+<span class="k">class</span> <span class="nc">OrderingScreen</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing the ordering screen for ranking and rating images.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTk</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">menu_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+            <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reload_ordering_screen</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+            <span class="n">hybrid_transition_made</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">root_bind_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the OrderingScreen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (CTk): The root cutom tkinter object.</span>
+<span class="sd">            save_obj (dict): The save object containing various parameters.</span>
+<span class="sd">            menu_callback (function): The callback function for the menu.</span>
+<span class="sd">            user (str): The user currently annotating.</span>
+<span class="sd">            reload_ordering_screen (function): Callback function to reload the </span>
+<span class="sd">                                               ordering screen.</span>
+<span class="sd">            hybrid_transition_made (bool): Flag indicating whether hybrid </span>
+<span class="sd">                                           transition was made.</span>
+<span class="sd">            root_bind_callback (function): Callback function used to bind events to the</span>
+<span class="sd">                                           root element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_directory_located</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_callback</span> <span class="o">=</span> <span class="n">menu_callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reload_ordering_screen</span> <span class="o">=</span> <span class="n">reload_ordering_screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span> <span class="o">=</span> <span class="n">root_bind_callback</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hybrid_transition_made</span> <span class="o">=</span> <span class="n">hybrid_transition_made</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span> <span class="o">=</span> <span class="n">save_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span> <span class="o">=</span> <span class="n">save_obj</span><span class="p">[</span><span class="s2">&quot;sort_alg&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">comparison_size</span>
+
+        <span class="k">if</span> <span class="s2">&quot;min_ip&quot;</span> <span class="ow">in</span> <span class="n">save_obj</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_ip</span> <span class="o">=</span> <span class="n">save_obj</span><span class="p">[</span><span class="s2">&quot;min_ip&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_ip</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_image_frames</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Rank-Based Annotation&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_duration_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;0:00&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">csv_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">saves_handler</span><span class="o">.</span><span class="n">get_path_to_save</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">,</span> <span class="s1">&#39;diff_levels&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;undone&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">])</span>
+
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">saves_handler</span><span class="o">.</span><span class="n">get_path_to_save</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">csv_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">saves_handler</span><span class="o">.</span><span class="n">get_path_to_save</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="n">HybridTrueSkill</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">hybrid_transition_made</span><span class="p">):</span>
+
+            <span class="n">current_user_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">csv_df</span><span class="o">.</span><span class="n">loc</span>
+                <span class="p">[(</span><span class="o">~</span><span class="n">csv_df</span><span class="p">[</span><span class="s1">&#39;undone&#39;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">csv_df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Ranking&quot;</span><span class="p">)])</span>
+
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="n">HybridTrueSkill</span><span class="p">:</span>
+
+            <span class="n">current_user_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">csv_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="o">~</span><span class="n">csv_df</span><span class="p">[</span><span class="s1">&#39;undone&#39;</span><span class="p">])])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">current_user_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">csv_df</span><span class="o">.</span><span class="n">loc</span>
+                <span class="p">[(</span><span class="n">csv_df</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">csv_df</span><span class="p">[</span><span class="s1">&#39;undone&#39;</span><span class="p">])])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">current_user_count</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="n">RatingAlgorithm</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Comparison count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span><span class="p">)</span> <span class="o">+</span>
+                <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()),</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Rating count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span><span class="p">)</span> <span class="o">+</span>
+                <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()),</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_bar</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkProgressBar</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_comparison_bar</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">back_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Back To Menu&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">back_to_menu</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">uuid4</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Control-z&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">undo_annotation</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Control-Z&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">undo_annotation</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Command-z&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">undo_annotation</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Command-Z&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">undo_annotation</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Up&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_key_scroll</span><span class="p">(</span><span class="s1">&#39;up&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Down&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_key_scroll</span><span class="p">(</span><span class="s1">&#39;down&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkProgressBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_progress</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Undo Last Annotation&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">text_color</span><span class="o">=</span><span class="s2">&quot;#777777&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Enter&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">ctk_utils</span><span class="o">.</span><span class="n">highlight_label</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Leave&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">ctk_utils</span><span class="o">.</span><span class="n">remove_highlight_label</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">undo_annotation</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_allowed</span> <span class="o">=</span> <span class="n">save_obj</span><span class="p">[</span><span class="s2">&quot;scroll_allowed&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">submission_timeout</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">directory_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">[</span><span class="s1">&#39;user_directory_dict&#39;</span><span class="p">]</span>
+        <span class="n">full_img_dir_path</span> <span class="o">=</span> <span class="n">saves_handler</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">[</span><span class="s1">&#39;image_directory&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="ow">in</span> <span class="n">directory_dict</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">directory_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">data</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">=</span> <span class="n">directory_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_directory_located</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">full_img_dir_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">data</span><span class="p">]):</span>
+
+            <span class="n">directory_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">full_img_dir_path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">=</span> <span class="n">full_img_dir_path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_directory_located</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ImageDirectoryPopOut</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">submit_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">back_to_menu</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OrderingScreen.file_2_CTkImage">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.file_2_CTkImage">[docs]</a>
+    <span class="k">def</span> <span class="nf">file_2_CTkImage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">min_ip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert an image file to a list of CTkImage objects.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_src (str): The path to the image file.</span>
+<span class="sd">            min_ip (Optional[bool]): If True the image is instead loaded from the</span>
+<span class="sd">                                     ..._MinIP directory</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[CTkImage]: The list of CTkImage objects.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If the image file is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">min_ip</span><span class="p">:</span>
+            <span class="n">img_src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">+</span> <span class="s2">&quot;_MinIP/&quot;</span> <span class="o">+</span> <span class="n">img_src</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img_src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">img_src</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.nii&#39;</span><span class="p">:</span>
+            <span class="n">ctk_imgs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">nib_imgs</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nib_imgs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">nib_imgs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
+                <span class="n">resize_factor</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">resize_factor</span><span class="p">),</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">resize_factor</span><span class="p">))</span>
+                <span class="n">ctk_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">(</span>
+                        <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">img</span><span class="p">))</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+                            <span class="n">new_shape</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">),</span>
+                        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_progress</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_progress</span> <span class="o">/</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size</span> <span class="o">*</span> <span class="n">nib_imgs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">ctk_imgs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_src</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">))]</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.load_initial_image">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.load_initial_image">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_initial_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_src</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the initial image for display.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_src (str): The source of the image file to load.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of CTkImage objects representing the loaded image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">img_src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">img_src</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;.nii&#39;</span><span class="p">:</span>
+            <span class="n">ctk_imgs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">nib_imgs</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">img_src</span><span class="p">)</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span>
+
+            <span class="n">mid_index</span> <span class="o">=</span> <span class="n">nib_imgs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+
+            <span class="n">img</span> <span class="o">=</span> <span class="n">nib_imgs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid_index</span><span class="p">]</span>
+            <span class="n">resize_factor</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">resize_factor</span><span class="p">),</span>
+                         <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">resize_factor</span><span class="p">))</span>
+            <span class="n">ctk_imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">img</span><span class="p">))</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+                <span class="n">new_shape</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)))</span>
+
+            <span class="k">return</span> <span class="n">ctk_imgs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">CTkImage</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_src</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">))]</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.update_images">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.update_images">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the displayed images on the screen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">img_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">displayed_images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+                <span class="n">image</span><span class="o">=</span><span class="n">img_info</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">img_info</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.update_time">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.update_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the displayed session duration time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_start_time</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="n">sec</span><span class="p">)</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">elapsed</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="nb">min</span><span class="p">)</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hours</span><span class="p">:</span>
+            <span class="n">text_input</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">hours</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">sec</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">min</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">text_input</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:01}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">sec</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text_input</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">sec</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_duration_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text_input</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer_after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.on_image_scroll">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_scroll">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_image_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the image scroll event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (Event): The tkinter scroll event.</span>
+<span class="sd">            idx (int): The index of the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.on_image_scroll_up">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_scroll_up">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_image_scroll_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the upward image scroll event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            idx (int): The index of the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.on_image_scroll_down">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_scroll_down">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_image_scroll_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the downward image scroll event.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            idx (int): The index of the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.on_image_key_scroll">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_key_scroll">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_image_key_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the image scroll event triggered by a key press.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dir (str): The direction of the scroll (&#39;up&#39; or &#39;down&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_hover_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">dir</span> <span class="o">==</span> <span class="s1">&#39;up&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_up</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_hover_idx</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">dir</span> <span class="o">==</span> <span class="s1">&#39;down&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_down</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_hover_idx</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.set_image_hover_idx">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.set_image_hover_idx">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_image_hover_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the index of the image being hovered.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            idx (int): The index of the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_hover_idx</span> <span class="o">=</span> <span class="n">idx</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.undo_annotation">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.undo_annotation">[docs]</a>
+    <span class="k">def</span> <span class="nf">undo_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Undo the previous annotation and update the display.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">[</span><span class="s1">&#39;sort_alg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="o">.</span><span class="n">place_forget</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">undo_csv_file</span><span class="p">()</span>
+            <span class="n">saves_handler</span><span class="o">.</span><span class="n">save_algorithm_pickle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_new_comparison</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Comparison count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span><span class="p">)</span> <span class="o">+</span>
+                <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_comparison_bar</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.update_comparison_bar">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.update_comparison_bar">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_comparison_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the comparison bar value based on the current comparison count.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_bar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.is_finished_check">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.is_finished_check">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_finished_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the sorting algorithm is finished.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the sorting algorithm is finished, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">is_finished</span><span class="p">():</span>
+            <span class="n">IsFinishedPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">back_to_menu</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.save_sorted_images">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.save_sorted_images">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_sorted_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the sorted images to the appropriate directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">src</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+            <span class="n">new_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">extension</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">+</span> <span class="s1">&#39;/sorted/&#39;</span> <span class="o">+</span> <span class="n">new_name</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">src</span><span class="p">),</span> <span class="n">dst</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.submit_comparison">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.submit_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">submit_comparison</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+            <span class="n">lvl</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">df_annotatation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submit a comparison of images with their associated level.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keys (Union[str, List[str]]): The key or keys representing the </span>
+<span class="sd">                                          images being compared.</span>
+<span class="sd">            lvl (int): The level associated with the comparison.</span>
+<span class="sd">            df_annotatation (bool, optional): Whether it is a dataframe </span>
+<span class="sd">                                              annotation. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">submission_timeout</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">submission_timeout</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="s1">&#39;DF&#39;</span> <span class="k">if</span> <span class="n">df_annotatation</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+
+        <span class="c1"># rmses_inference heavy when amount of samples is large</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="n">TrueSkill</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2000</span><span class="p">:</span>
+            <span class="n">prev_ratings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">ratings</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_to_csv_file</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">lvl</span><span class="p">,</span> <span class="n">df_annotatation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">lvl</span><span class="p">)</span>
+            <span class="n">conv</span><span class="o">.</span><span class="n">rmses_inference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">,</span> <span class="n">prev_ratings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">lvl</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_to_csv_file</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">lvl</span><span class="p">,</span> <span class="n">df_annotatation</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Comparison count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span><span class="p">)</span> <span class="o">+</span>
+            <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="n">RatingAlgorithm</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Comparison count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span><span class="p">)</span> <span class="o">+</span>
+                <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Rating count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comp_count</span><span class="p">)</span> <span class="o">+</span>
+                <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison_max</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_comparison_bar</span><span class="p">()</span>
+        <span class="n">saves_handler</span><span class="o">.</span><span class="n">save_algorithm_pickle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_elapsed_time_prev</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_start_time</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_finished_check</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="p">)</span> <span class="o">==</span> <span class="n">sa</span><span class="o">.</span><span class="n">HybridTrueSkill</span> <span class="ow">and</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">is_rating</span> <span class="ow">and</span>
+                    <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hybrid_transition_made</span><span class="p">):</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after_cancel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timer_after</span><span class="p">)</span>
+                <span class="c1"># Switching modes popout</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reload_ordering_screen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span>
+                <span class="n">SwitchingModesPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_new_comparison</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_submission_timeout</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.remove_submission_timeout">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.remove_submission_timeout">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_submission_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove the submission timeout flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">submission_timeout</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.save_to_csv_file">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.save_to_csv_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_to_csv_file</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+            <span class="n">lvls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+            <span class="n">df_annotatation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the result and level of the comparison to a CSV file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            res (Union[str, List[str]]): The result of the comparison.</span>
+<span class="sd">            lvls (Union[str, List[str]]): The level associated with the </span>
+<span class="sd">                                          comparison.</span>
+<span class="sd">            df_annotatation (bool, optional): Whether it is a dataframe </span>
+<span class="sd">                                              annotation. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="s1">&#39;DF&#39;</span> <span class="k">if</span> <span class="n">df_annotatation</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">lvls</span><span class="p">)</span>
+            <span class="n">diff_levels</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">annotation_type</span> <span class="o">=</span> <span class="s2">&quot;Rating&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">res</span>
+            <span class="n">diff_levels</span> <span class="o">=</span> <span class="n">lvls</span>
+            <span class="n">annotation_type</span> <span class="o">=</span> <span class="s2">&quot;Ranking&quot;</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">result</span><span class="p">],</span>
+                           <span class="s1">&#39;diff_level&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">diff_levels</span><span class="p">],</span>
+                           <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">session_start_time</span><span class="p">],</span>
+                           <span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">],</span>
+                           <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">user</span><span class="p">],</span>
+                           <span class="s1">&#39;undone&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+                           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">annotation_type</span><span class="p">]})</span>
+
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">saves_handler</span><span class="o">.</span><span class="n">get_path_to_save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span>
+                  <span class="n">header</span><span class="o">=</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.undo_csv_file">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.undo_csv_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">undo_csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Undo the last entry in the CSV file by marking it as undone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">saves_handler</span><span class="o">.</span><span class="n">get_path_to_save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span>
+        <span class="n">copy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">copy_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">copy_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s1">&#39;undone&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">copy_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.back_to_menu">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.back_to_menu">[docs]</a>
+    <span class="k">def</span> <span class="nf">back_to_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remove_after</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return to the main menu.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            remove_after (bool, optional): Whether to remove the timer. </span>
+<span class="sd">                                           Defaults to True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">remove_after</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after_cancel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timer_after</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_callback</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OrderingScreen.submit_path">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.ordering.OrderingScreen.submit_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">submit_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submit the image directory path and update the display.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): The path to the image directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_directory_located</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">directory_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">[</span><span class="s1">&#39;user_directory_dict&#39;</span><span class="p">]</span>
+        <span class="n">directory_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="n">saves_handler</span><span class="o">.</span><span class="n">save_algorithm_pickle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_obj</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

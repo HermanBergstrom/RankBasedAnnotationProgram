@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views package &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="views.orderings package" href="views.orderings.html" />
+    <link rel="prev" title="utils package" href="utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Rank-Based Annotation Program</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gui.html">gui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting_algorithms.html">sorting_algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">views package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html">views.orderings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-views.advanced_creation_menu">views.advanced_creation_menu</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.advanced_creation_menu.AdvancedCreationMenu"><code class="docutils literal notranslate"><span class="pre">AdvancedCreationMenu</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-views.advanced_information_page">views.advanced_information_page</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.advanced_information_page.AdvancedInformationPage"><code class="docutils literal notranslate"><span class="pre">AdvancedInformationPage</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-views.menu">views.menu</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.menu.MenuScreen"><code class="docutils literal notranslate"><span class="pre">MenuScreen</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-views">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">widgets package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Rank-Based Annotation Program</a></li>
+      <li class="breadcrumb-item active">views package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/views.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="views-package">
+<h1>views package<a class="headerlink" href="#views-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="views.orderings.html">views.orderings package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="views.orderings.html#module-views.orderings.multiordering">views.orderings.multiordering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.allow_motion"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.allow_motion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.create_image_widget"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.create_image_widget()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.display"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.display_new_comparison"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.display_new_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.init_diff_level_buttons"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.init_diff_level_buttons()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.init_image_frames"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.init_image_frames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.move_left"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.move_left()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.move_right"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.move_right()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.on_drag_motion"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.on_drag_motion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.on_drag_start"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.on_drag_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.on_drag_stop"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.on_drag_stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.reset_diff_levels"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.reset_diff_levels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.submit"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.submit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.multiordering.MultiOrderingScreen.update_diff_labels"><code class="docutils literal notranslate"><span class="pre">MultiOrderingScreen.update_diff_labels()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="views.orderings.html#module-views.orderings.ordering">views.orderings.ordering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen"><code class="docutils literal notranslate"><span class="pre">OrderingScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.back_to_menu"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.back_to_menu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.file_2_CTkImage"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.file_2_CTkImage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.is_finished_check"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.is_finished_check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.load_initial_image"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.load_initial_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_key_scroll"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.on_image_key_scroll()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_scroll"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.on_image_scroll()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_scroll_down"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.on_image_scroll_down()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.on_image_scroll_up"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.on_image_scroll_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.remove_submission_timeout"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.remove_submission_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.save_sorted_images"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.save_sorted_images()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.save_to_csv_file"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.save_to_csv_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.set_image_hover_idx"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.set_image_hover_idx()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.submit_comparison"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.submit_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.submit_path"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.submit_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.undo_annotation"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.undo_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.undo_csv_file"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.undo_csv_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.update_comparison_bar"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.update_comparison_bar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.update_images"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.update_images()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.ordering.OrderingScreen.update_time"><code class="docutils literal notranslate"><span class="pre">OrderingScreen.update_time()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="views.orderings.html#module-views.orderings.pairwiseordering">views.orderings.pairwiseordering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.check_df_for_comp"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.check_df_for_comp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.display"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.display_new_comparison"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.display_new_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.get_correct_value_for_index"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.get_correct_value_for_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.highlight"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.init_image_frames"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.init_image_frames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_enter"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_shortcmd"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.on_shortcmd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_shortcmd_up"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.on_shortcmd_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_tab"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.on_tab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.remove_highlight"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.remove_highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.reset_tab"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.reset_tab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.pairwiseordering.PairwiseOrderingScreen.submit"><code class="docutils literal notranslate"><span class="pre">PairwiseOrderingScreen.submit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="views.orderings.html#module-views.orderings.rating">views.orderings.rating</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen"><code class="docutils literal notranslate"><span class="pre">RatingScreen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.display"><code class="docutils literal notranslate"><span class="pre">RatingScreen.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.display_new_comparison"><code class="docutils literal notranslate"><span class="pre">RatingScreen.display_new_comparison()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.highlight"><code class="docutils literal notranslate"><span class="pre">RatingScreen.highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.init_image_frames"><code class="docutils literal notranslate"><span class="pre">RatingScreen.init_image_frames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.on_enter"><code class="docutils literal notranslate"><span class="pre">RatingScreen.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.on_shortcmd"><code class="docutils literal notranslate"><span class="pre">RatingScreen.on_shortcmd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.on_shortcmd_up"><code class="docutils literal notranslate"><span class="pre">RatingScreen.on_shortcmd_up()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.on_tab"><code class="docutils literal notranslate"><span class="pre">RatingScreen.on_tab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.remove_highlight"><code class="docutils literal notranslate"><span class="pre">RatingScreen.remove_highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.reset_tab"><code class="docutils literal notranslate"><span class="pre">RatingScreen.reset_tab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="views.orderings.html#views.orderings.rating.RatingScreen.submit"><code class="docutils literal notranslate"><span class="pre">RatingScreen.submit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="views.orderings.html#module-views.orderings">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-views.advanced_creation_menu">
+<span id="views-advanced-creation-menu"></span><h2>views.advanced_creation_menu<a class="headerlink" href="#module-views.advanced_creation_menu" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdvancedCreationMenu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing the more advanced creation menu which allows the user to
+customize ranking and rating buttons and prompts and more.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.add_option">
+<span class="sig-name descname"><span class="pre">add_option</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.add_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.add_option" title="Link to this definition"></a></dt>
+<dd><p>Creates a new rating button (and row) and brings it into edit mode.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.algorithm_changed">
+<span class="sig-name descname"><span class="pre">algorithm_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.algorithm_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.algorithm_changed" title="Link to this definition"></a></dt>
+<dd><p>Handles the change event of the algorithm selection option menu.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.append_row">
+<span class="sig-name descname"><span class="pre">append_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">button_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.append_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.append_row" title="Link to this definition"></a></dt>
+<dd><p>Adds a row to the rating buttons list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em>) – The index of the row in the list which it is supposed to be
+added to.</p></li>
+<li><p><strong>button_text</strong> (<em>str</em>) – The currently assigned text of the rating button.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.cancel_edit">
+<span class="sig-name descname"><span class="pre">cancel_edit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.cancel_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.cancel_edit" title="Link to this definition"></a></dt>
+<dd><p>Brings (all) rows out of edit mode.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.change_slider_row_state">
+<span class="sig-name descname"><span class="pre">change_slider_row_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slider_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.change_slider_row_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.change_slider_row_state" title="Link to this definition"></a></dt>
+<dd><p>Changes the state of the slider row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>bool</em>) – Boolean indicating whether the slider row should be
+enabled or disabled.</p></li>
+<li><p><strong>slider_frame</strong> (<em>CTkFrame</em>) – The frame containing the slider.</p></li>
+<li><p><strong>comp_label</strong> (<em>CTkLabel</em>) – The label for comparison size.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.create_save">
+<span class="sig-name descname"><span class="pre">create_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.StringVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.SortingAlgorithm" title="sorting_algorithms.SortingAlgorithm"><span class="pre">SortingAlgorithm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkSlider</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.StringVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scroll_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.BooleanVar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.create_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.create_save" title="Link to this definition"></a></dt>
+<dd><p>Creates and saves the annotation item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>StringVar</em>) – Name of the annotation item.</p></li>
+<li><p><strong>algorithm</strong> (<a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.SortingAlgorithm" title="sorting_algorithms.SortingAlgorithm"><em>SortingAlgorithm</em></a>) – Selected algorithm for sorting
+the images.</p></li>
+<li><p><strong>comparison_size</strong> (<em>CTkSlider</em>) – Slider holding the size of the
+comparison.</p></li>
+<li><p><strong>image_directory</strong> (<em>StringVar</em>) – Directory path containing the
+image files.</p></li>
+<li><p><strong>scroll_enabled</strong> (<em>BooleanVar</em>) – A checkbox with a boolean indicating
+whether scrolling is enabled.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.delete_rating">
+<span class="sig-name descname"><span class="pre">delete_rating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.delete_rating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.delete_rating" title="Link to this definition"></a></dt>
+<dd><p>Removes a rating from the list of ratings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the rating that is to be removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.display" title="Link to this definition"></a></dt>
+<dd><p>Displays the content of the advanced creation menu view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.edit">
+<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.edit" title="Link to this definition"></a></dt>
+<dd><p>Brings a rating row into edit mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the rating that is to be set to edit mode.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.hide_comparison_count">
+<span class="sig-name descname"><span class="pre">hide_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.hide_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.hide_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Hides the comparison count label and entry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.hide_ranking_options">
+<span class="sig-name descname"><span class="pre">hide_ranking_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.hide_ranking_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.hide_ranking_options" title="Link to this definition"></a></dt>
+<dd><p>Hides the ranking options frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.hide_rating_options">
+<span class="sig-name descname"><span class="pre">hide_rating_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.hide_rating_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.hide_rating_options" title="Link to this definition"></a></dt>
+<dd><p>Hides the rating options frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.move_down">
+<span class="sig-name descname"><span class="pre">move_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.move_down"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.move_down" title="Link to this definition"></a></dt>
+<dd><p>Moves a rating down in the list of ratings (increases its index in the list by
+1). Other elements are moved accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the rating that is to be moved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.move_up">
+<span class="sig-name descname"><span class="pre">move_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.move_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.move_up" title="Link to this definition"></a></dt>
+<dd><p>Moves a rating up in the list of ratings (decreases its index in the list by 1).
+Other elements are moved accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the rating that is to be moved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.populate_rank_entry_frame">
+<span class="sig-name descname"><span class="pre">populate_rank_entry_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.populate_rank_entry_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.populate_rank_entry_frame" title="Link to this definition"></a></dt>
+<dd><p>Adds the widgets associated with each of the rank entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<em>CTkFrame</em>) – The frame that is to be populated.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – The label text of the specific entry.</p></li>
+<li><p><strong>var_index</strong> – The index of the text variable in the ranking_buttons list that
+should be associated with this specific entry.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.refresh_ranking_buttons">
+<span class="sig-name descname"><span class="pre">refresh_ranking_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.refresh_ranking_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.refresh_ranking_buttons" title="Link to this definition"></a></dt>
+<dd><p>Updates to ranking options frame so that the correct fields are displayed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.refresh_rating_buttons">
+<span class="sig-name descname"><span class="pre">refresh_rating_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.refresh_rating_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.refresh_rating_buttons" title="Link to this definition"></a></dt>
+<dd><p>Repopulates the rating buttons list with the current row view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.select_directory">
+<span class="sig-name descname"><span class="pre">select_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkToplevel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory_var</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.StringVar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.select_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.select_directory" title="Link to this definition"></a></dt>
+<dd><p>Callback function to select a directory using a file dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> (<em>CTkToplevel</em>) – The root window or parent widget.</p></li>
+<li><p><strong>directory_var</strong> (<em>StringVar</em>) – The element to store the selected</p></li>
+<li><p><strong>directory.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.set_initial_settings">
+<span class="sig-name descname"><span class="pre">set_initial_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.set_initial_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.set_initial_settings" title="Link to this definition"></a></dt>
+<dd><p>Updates the values of the relevant fields with the initial settings provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>initial_settings</strong> (<em>dict</em>) – The dictionary containing the fields and their
+corresponding initial values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.should_show_ranking_options">
+<span class="sig-name descname"><span class="pre">should_show_ranking_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.should_show_ranking_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.should_show_ranking_options" title="Link to this definition"></a></dt>
+<dd><p>Checks if the current selected algorithm implies that ranking options should be
+shown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if ranking options should be shown, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.should_show_rating_options">
+<span class="sig-name descname"><span class="pre">should_show_rating_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.should_show_rating_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.should_show_rating_options" title="Link to this definition"></a></dt>
+<dd><p>Checks if the current selected algorithm implies that rating options should be
+shown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if rating options should be shown, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.should_show_switches">
+<span class="sig-name descname"><span class="pre">should_show_switches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.should_show_switches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.should_show_switches" title="Link to this definition"></a></dt>
+<dd><p>Checks if the current selected algorithm and comparison size implies that the
+user should have the option to add the equal and much greater/smaller ranking
+buttons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if buttons should be available, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.show_comparison_count">
+<span class="sig-name descname"><span class="pre">show_comparison_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.show_comparison_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.show_comparison_count" title="Link to this definition"></a></dt>
+<dd><p>Displays the comparison count label and entry in the basic settings frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.show_ranking_options">
+<span class="sig-name descname"><span class="pre">show_ranking_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.show_ranking_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.show_ranking_options" title="Link to this definition"></a></dt>
+<dd><p>Displays the ranking options frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.show_rating_options">
+<span class="sig-name descname"><span class="pre">show_rating_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.show_rating_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.show_rating_options" title="Link to this definition"></a></dt>
+<dd><p>Displays the rating options frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.update_comparison_size">
+<span class="sig-name descname"><span class="pre">update_comparison_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.update_comparison_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.update_comparison_size" title="Link to this definition"></a></dt>
+<dd><p>Updates the comparison size label based on the slider value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>int</em>) – The current slider value.</p></li>
+<li><p><strong>label</strong> (<em>CTkLabel</em>) – The label to be updated.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.update_rating">
+<span class="sig-name descname"><span class="pre">update_rating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.update_rating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.update_rating" title="Link to this definition"></a></dt>
+<dd><p>Updates the text of a rating specified by the index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em>) – The index of the rating that is to be updated.</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The new text associated with that rating.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_creation_menu.AdvancedCreationMenu.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_creation_menu.html#AdvancedCreationMenu.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_creation_menu.AdvancedCreationMenu.validate" title="Link to this definition"></a></dt>
+<dd><p>Validation function used to see if entry contains an integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – The string that is to be validated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views.advanced_information_page">
+<span id="views-advanced-information-page"></span><h2>views.advanced_information_page<a class="headerlink" href="#module-views.advanced_information_page" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdvancedInformationPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing the more advanced information pagewhich allows the user
+to visualize more information regarding the algorithm</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.create_histogram">
+<span class="sig-name descname"><span class="pre">create_histogram</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">customtkinter.CTkCanvas</span></span></span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.create_histogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.create_histogram" title="Link to this definition"></a></dt>
+<dd><p>Creates a histogram of the rating distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The generated plot in the form of a canvas. Note that this is</dt><dd><p>actually a tkinter canvas and not a ctk canvas. But the
+implementation in the libraries try to obscure this fact.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Canvas</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.display" title="Link to this definition"></a></dt>
+<dd><p>Displays all the fields that should be displayed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.display_convergence">
+<span class="sig-name descname"><span class="pre">display_convergence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.display_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.display_convergence" title="Link to this definition"></a></dt>
+<dd><p>Displays the convergence tab, including the convergence graph.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.display_general_information">
+<span class="sig-name descname"><span class="pre">display_general_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.display_general_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.display_general_information" title="Link to this definition"></a></dt>
+<dd><p>Displays all of the general information fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.generate_convergence_plot">
+<span class="sig-name descname"><span class="pre">generate_convergence_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.generate_convergence_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.generate_convergence_plot" title="Link to this definition"></a></dt>
+<dd><p>Creates the convergence plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.generate_ordering_frame">
+<span class="sig-name descname"><span class="pre">generate_ordering_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.generate_ordering_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.generate_ordering_frame" title="Link to this definition"></a></dt>
+<dd><p>Creates the list of the current ordering of elements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.generate_rating_distribution">
+<span class="sig-name descname"><span class="pre">generate_rating_distribution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.generate_rating_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.generate_rating_distribution" title="Link to this definition"></a></dt>
+<dd><p>Creates the rating distribution view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.get_images_not_found_widget">
+<span class="sig-name descname"><span class="pre">get_images_not_found_widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.get_images_not_found_widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.get_images_not_found_widget" title="Link to this definition"></a></dt>
+<dd><p>Creates and returns a widget that can be used to select the directory containing
+the images of the sorting algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parent</strong> (<em>ctk.CTkBaseClass</em>) – The parent widget that is to facilitate the
+widget.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The constructed widget, including a label, a directory entry</dt><dd><p>and a submit button.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ctk.CTkFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.get_status">
+<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.get_status" title="Link to this definition"></a></dt>
+<dd><p>Fetches the status of a save in the form of a string as well as color
+information for that string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>count</strong> (<em>int</em>) – The amount of comparisons made.</p></li>
+<li><p><strong>max_count</strong> (<em>int</em>) – The total amount of comparisons allowed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The text corresponding to the status of the save</dt><dd><p>as well as potentially a specific color for the
+text.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[str, Optional[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.hist_hover">
+<span class="sig-name descname"><span class="pre">hist_hover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BarContainer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.hist_hover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.hist_hover" title="Link to this definition"></a></dt>
+<dd><p>Handles the hover effects of the histogram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>Any</em>) – The hover event.</p></li>
+<li><p><strong>patches</strong> (<em>matplotlib.container.BarContainer</em>) – The bars in the histogram that
+are to be manipulated.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.hover">
+<span class="sig-name descname"><span class="pre">hover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.hover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.hover" title="Link to this definition"></a></dt>
+<dd><p>Handles the hover effects over the convergence graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>Any</em>) – The hover event.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.images_available">
+<span class="sig-name descname"><span class="pre">images_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.images_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.images_available" title="Link to this definition"></a></dt>
+<dd><p>Checks if all the images of the sorting_algorithm could be found at the provided
+path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path that is to be checked.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>True if all images were found in the provided directory, otherwise</dt><dd><p>false</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.open_folder">
+<span class="sig-name descname"><span class="pre">open_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.open_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.open_folder" title="Link to this definition"></a></dt>
+<dd><p>Opens a folder in the file explorer of the operating system. If the provided
+folder does not exist, nothing happens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The full path to the folder that is to be opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.rating_changed">
+<span class="sig-name descname"><span class="pre">rating_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.rating_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.rating_changed" title="Link to this definition"></a></dt>
+<dd><p>Replaces the content of the list of images to match that of the currently
+selected rating.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.replace_placeholder">
+<span class="sig-name descname"><span class="pre">replace_placeholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">placeholder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkCanvas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.replace_placeholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.replace_placeholder" title="Link to this definition"></a></dt>
+<dd><p>Function to replace the placeholder frame for flickering workaround.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>placeholder</strong> (<em>ctk.CTkFrame</em>) – The placeholder frame that is to be removed.</p></li>
+<li><p><strong>canvas</strong> (<em>ctk.CTkCanvas</em>) – The Canvas that is to be placed instead.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.select_directory">
+<span class="sig-name descname"><span class="pre">select_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory_var</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.StringVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">submit_button</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkButton</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.select_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.select_directory" title="Link to this definition"></a></dt>
+<dd><p>Selects a directory using a file dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> – The event that triggered the callback.</p></li>
+<li><p><strong>root</strong> (<em>CTk</em>) – The root Tk object.</p></li>
+<li><p><strong>directory_var</strong> (<em>StringVar</em>) – The directory.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.submit_directory">
+<span class="sig-name descname"><span class="pre">submit_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory_var</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.StringVar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.submit_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.submit_directory" title="Link to this definition"></a></dt>
+<dd><p>Saves the directory path to the user and refreshes the GUI so that the images
+are fetched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory_var</strong> (<em>ctk.StringVar</em>) – The string variable containing the path where
+the images are located.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.advanced_information_page.AdvancedInformationPage.update_annot">
+<span class="sig-name descname"><span class="pre">update_annot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/advanced_information_page.html#AdvancedInformationPage.update_annot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.advanced_information_page.AdvancedInformationPage.update_annot" title="Link to this definition"></a></dt>
+<dd><p>Updates the text and location of the convergence graph annotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ind</strong> (<em>dict</em>) – A dict containing information about the x coordinates that are
+in proximity of the mouse.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views.menu">
+<span id="views-menu"></span><h2>views.menu<a class="headerlink" href="#module-views.menu" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.menu.MenuScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MenuScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordering_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">open_user_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">advanced_settings_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">information_page_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the menu screen of the Rank-Based Annotation application.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.append_row">
+<span class="sig-name descname"><span class="pre">append_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.append_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.append_row" title="Link to this definition"></a></dt>
+<dd><p>Appends a row with save information to the saved annotations frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em>) – The index of the save.</p></li>
+<li><p><strong>save</strong> (<em>dict</em>) – The save object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.display" title="Link to this definition"></a></dt>
+<dd><p>Displays the menu screen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.display_saves">
+<span class="sig-name descname"><span class="pre">display_saves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.display_saves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.display_saves" title="Link to this definition"></a></dt>
+<dd><p>Displays the saved annotations in the menu.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.display_user">
+<span class="sig-name descname"><span class="pre">display_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.display_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.display_user" title="Link to this definition"></a></dt>
+<dd><p>Displays the user label with the provided username.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user</strong> (<em>str</em>) – The username to display.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.get_status">
+<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.get_status" title="Link to this definition"></a></dt>
+<dd><p>Fetches the status of a save in the form of a string as well as color
+information for that string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>count</strong> (<em>int</em>) – The amount of comparisons made.</p></li>
+<li><p><strong>max_count</strong> (<em>int</em>) – The total amount of comparisons allowed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The text corresponding to the status of the save</dt><dd><p>as well as potentially a specific color for the
+text.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[str, Optional[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.highlight_label">
+<span class="sig-name descname"><span class="pre">highlight_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">og_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.highlight_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.highlight_label" title="Link to this definition"></a></dt>
+<dd><p>Highlights the label on mouse hover.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>ctk.CTkLabel</em>) – The label to be highlighted.</p></li>
+<li><p><strong>og_color</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The original color of the label as a list of
+strings representing the color code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.load_save">
+<span class="sig-name descname"><span class="pre">load_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.load_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.load_save" title="Link to this definition"></a></dt>
+<dd><p>Loads the save object associated with the index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the save.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.new_annotation">
+<span class="sig-name descname"><span class="pre">new_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.new_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.new_annotation" title="Link to this definition"></a></dt>
+<dd><p>Callback function for the new annotation button.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.open_delete_save_pop_out">
+<span class="sig-name descname"><span class="pre">open_delete_save_pop_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.open_delete_save_pop_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.open_delete_save_pop_out" title="Link to this definition"></a></dt>
+<dd><p>Opens a confirmation pop out which allows the user to delete a save.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the save object that is up for deletion in the
+saves list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.open_folder">
+<span class="sig-name descname"><span class="pre">open_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.open_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.open_folder" title="Link to this definition"></a></dt>
+<dd><p>Opens a folder in the file explorer of the operating system. If the provided
+folder does not exist, nothing happens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rel_path</strong> (<em>str</em>) – The relative path to the folder that is to be opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.remove_highlight_label">
+<span class="sig-name descname"><span class="pre">remove_highlight_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">og_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.remove_highlight_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.remove_highlight_label" title="Link to this definition"></a></dt>
+<dd><p>Removes the highlight from the specified label by restoring its original
+text color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>ctk.CTkLabel</em>) – The label from which to remove the highlight.</p></li>
+<li><p><strong>og_color</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The original color of the label as a list of
+strings representing the color code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.replace_placeholder">
+<span class="sig-name descname"><span class="pre">replace_placeholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">placeholder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkCanvas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.replace_placeholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.replace_placeholder" title="Link to this definition"></a></dt>
+<dd><p>Function to replace the placeholder frame for flickering workaround.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>placeholder</strong> (<em>ctk.CTkFrame</em>) – The placeholder frame that is to be removed.</p></li>
+<li><p><strong>canvas</strong> (<em>ctk.CTkCanvas</em>) – The Canvas that is to be placed instead.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.show_save_info">
+<span class="sig-name descname"><span class="pre">show_save_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.show_save_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.show_save_info" title="Link to this definition"></a></dt>
+<dd><p>Displays information related to a save file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the save file that is to be displayed in the
+saves list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.target_save">
+<span class="sig-name descname"><span class="pre">target_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.target_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.target_save" title="Link to this definition"></a></dt>
+<dd><p>Changes which save is currently displayed, updates highlights in the saves list
+accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the save file that is to be displayed in the
+saves list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.menu.MenuScreen.update_wraplength">
+<span class="sig-name descname"><span class="pre">update_wraplength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/menu.html#MenuScreen.update_wraplength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.menu.MenuScreen.update_wraplength" title="Link to this definition"></a></dt>
+<dd><p>Updates the wraplength of the label based on its width.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>CTkLabel</em>) – The label to update.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-views" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utils.html" class="btn btn-neutral float-left" title="utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="views.orderings.html" class="btn btn-neutral float-right" title="views.orderings package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

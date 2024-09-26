@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views.advanced_creation_menu &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">views.advanced_creation_menu</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for views.advanced_creation_menu</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+
+<span class="kn">import</span> <span class="nn">sorting_algorithms</span> <span class="k">as</span> <span class="nn">sa</span>
+<span class="kn">import</span> <span class="nn">utils.saves_handler</span> <span class="k">as</span> <span class="nn">saves_handler</span>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu">[docs]</a>
+<span class="k">class</span> <span class="nc">AdvancedCreationMenu</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing the more advanced creation menu which allows the user to </span>
+<span class="sd">    customize ranking and rating buttons and prompts and more.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTk</span><span class="p">,</span> <span class="n">menu_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+            <span class="n">initial_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the AdvancedCreationMenu instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (CTk): The root cutom tkinter object.</span>
+<span class="sd">            menu_callback (function): Callback function to return to the main menu.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Rating 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Rating 2&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_callback</span> <span class="o">=</span> <span class="n">menu_callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="c1"># General settings</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span> <span class="o">=</span> <span class="mi">15</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">general_settings_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;General Settings&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Name:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">placeholder_text</span><span class="o">=</span><span class="s2">&quot;Enter the name of the annotation session&quot;</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Algorithm:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Comparison Size:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span>
+            <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkSlider</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number_of_steps</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">val</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_size_label</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_comparison_size</span><span class="p">(</span>
+                <span class="n">val</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkOptionMenu</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;True Skill&quot;</span><span class="p">,</span> <span class="s2">&quot;Merge Sort&quot;</span><span class="p">,</span> <span class="s2">&quot;Rating&quot;</span><span class="p">,</span> <span class="s2">&quot;Hybrid&quot;</span><span class="p">],</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_changed</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_dir_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Image Directory:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/Images&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span><span class="p">,</span>
+            <span class="n">placeholder_text</span><span class="o">=</span><span class="s2">&quot;select the directory which contains the files&quot;</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory_entry</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span>
+            <span class="n">image_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_directory</span><span class="p">(</span>
+                <span class="n">parent</span><span class="p">,</span> <span class="n">image_directory</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_scrolling_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Enable Scrolling:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_enabled</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">BooleanVar</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_enabled_checkbox</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkCheckBox</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_enabled</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">checkbox_width</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">checkbox_height</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">onvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">offvalue</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Max Total Comparisons:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">vcmd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">),</span> <span class="s1">&#39;%P&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
+            <span class="n">validatecommand</span><span class="o">=</span><span class="n">vcmd</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_comparison_count_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Max User Comparisons:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_comparison_count_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
+            <span class="n">validatecommand</span><span class="o">=</span><span class="n">vcmd</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="c1"># Advanced settings</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="p">,</span>
+            <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Rating prompt:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt</span><span class="p">,</span>
+            <span class="n">placeholder_text</span><span class="o">=</span><span class="s2">&quot;Enter the text prompt for annotations&quot;</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Rating Options&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkScrollableFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="p">,</span>
+            <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Ranking Options&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt_label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Ranking prompt:&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt</span><span class="p">,</span>
+            <span class="n">placeholder_text</span><span class="o">=</span><span class="s2">&quot;Enter the text prompt for annotations&quot;</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkSwitch</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refresh_ranking_buttons</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkSwitch</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&gt;&gt;&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refresh_ranking_buttons</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Create Annotation&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">algorithm_selection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="p">,</span> <span class="n">slider</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">,</span>
+            <span class="n">image_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span><span class="p">,</span>
+            <span class="n">scroll_enabled</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_enabled</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_save</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">algorithm_selection</span><span class="p">,</span> <span class="n">slider</span><span class="p">,</span> <span class="n">image_directory</span><span class="p">,</span>
+                <span class="n">scroll_enabled</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cancel_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+            <span class="n">command</span><span class="o">=</span><span class="n">menu_callback</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">initial_settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_initial_settings</span><span class="p">(</span><span class="n">initial_settings</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+
+<div class="viewcode-block" id="AdvancedCreationMenu.set_initial_settings">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.set_initial_settings">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_initial_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the values of the relevant fields with the initial settings provided.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            initial_settings (dict): The dictionary containing the fields and their</span>
+<span class="sd">                                     corresponding initial values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">initial_settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">initial_settings</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="s1">&#39;algorithm_selection&#39;</span> <span class="ow">in</span> <span class="n">initial_settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+                <span class="n">initial_settings</span><span class="p">[</span><span class="s1">&#39;algorithm_selection&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="s1">&#39;image_directory&#39;</span> <span class="ow">in</span> <span class="n">initial_settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_directory</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">initial_settings</span><span class="p">[</span><span class="s1">&#39;image_directory&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="s1">&#39;slider&#39;</span> <span class="ow">in</span> <span class="n">initial_settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">initial_settings</span><span class="p">[</span><span class="s1">&#39;slider&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="s1">&#39;scroll_enabled&#39;</span> <span class="ow">in</span> <span class="n">initial_settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll_enabled</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">initial_settings</span><span class="p">[</span><span class="s1">&#39;scroll_enabled&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_changed</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.display">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.display">[docs]</a>
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the content of the advanced creation menu view.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;header&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;header&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;header&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">general_settings_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                             <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                             <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_ranking_options</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                 <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+                <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+                <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+                <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_dir_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                  <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_scrolling_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_enabled_checkbox</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        self.user_comparison_count_label.grid(</span>
+<span class="sd">            row=7, column=0, padx=10, pady=self.basic_settings_pady, sticky=&quot;e&quot;</span>
+<span class="sd">        )</span>
+
+<span class="sd">        self.user_comparison_count_entry.grid(</span>
+<span class="sd">            row=7, column=1, padx=10, pady=self.basic_settings_pady, sticky=&quot;w&quot;</span>
+<span class="sd">        )&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;advanced_settings&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;advanced_settings&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nesw&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_settings_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nesw&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Buttons</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cancel_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                      <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                       <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_frame</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_frame</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_rating_options</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_rating_options</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_ranking_options</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_ranking_options</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.show_ranking_options">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.show_ranking_options">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_ranking_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the ranking options frame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_ranking_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.show_rating_options">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.show_rating_options">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_rating_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the rating options frame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.show_comparison_count">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.show_comparison_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays the comparison count label and entry in the basic settings frame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_settings_pady</span><span class="p">,</span>
+            <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.hide_rating_options">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.hide_rating_options">[docs]</a>
+    <span class="k">def</span> <span class="nf">hide_rating_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hides the rating options frame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_list_frame</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.hide_ranking_options">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.hide_ranking_options">[docs]</a>
+    <span class="k">def</span> <span class="nf">hide_ranking_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hides the ranking options frame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list_frame</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.hide_comparison_count">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.hide_comparison_count">[docs]</a>
+    <span class="k">def</span> <span class="nf">hide_comparison_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hides the comparison count label and entry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_label</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.refresh_ranking_buttons">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.refresh_ranking_buttons">[docs]</a>
+    <span class="k">def</span> <span class="nf">refresh_ranking_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates to ranking options frame so that the correct fields are displayed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="n">current_row</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_switches</span><span class="p">():</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span><span class="o">.</span><span class="n">deselect</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span><span class="o">.</span><span class="n">deselect</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+
+                <span class="n">equals_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+                    <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span>
+                        <span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">populate_rank_entry_frame</span><span class="p">(</span><span class="n">equals_frame</span><span class="p">,</span> <span class="s2">&quot;A == B:&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="n">equals_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                  <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+                <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># A &gt; B</span>
+
+            <span class="n">A_greater_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span>
+                    <span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_rank_entry_frame</span><span class="p">(</span><span class="n">A_greater_frame</span><span class="p">,</span> <span class="s2">&quot;A &gt; B:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">A_greater_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="c1"># A &lt; B</span>
+
+            <span class="n">B_greater_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span>
+                    <span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate_rank_entry_frame</span><span class="p">(</span><span class="n">B_greater_frame</span><span class="p">,</span> <span class="s2">&quot;A &lt; B:&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">B_greater_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+
+                <span class="c1"># A &gt;&gt; B</span>
+
+                <span class="n">A_much_greater_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+                    <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span>
+                        <span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">populate_rank_entry_frame</span><span class="p">(</span>
+                    <span class="n">A_much_greater_frame</span><span class="p">,</span> <span class="s2">&quot;A &gt;&gt; B:&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="n">A_much_greater_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+                <span class="c1"># A &lt;&lt; B</span>
+
+                <span class="n">B_much_greater_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span>
+                    <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span>
+                        <span class="s2">&quot;fg_color&quot;</span><span class="p">))</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">populate_rank_entry_frame</span><span class="p">(</span>
+                    <span class="n">B_much_greater_frame</span><span class="p">,</span> <span class="s2">&quot;A &lt;&lt; B:&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+                <span class="n">B_much_greater_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+                <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">multi_info_text</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_list</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;There are not buttons when the comparison size is greater than 2&quot;</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+            <span class="n">multi_info_text</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.populate_rank_entry_frame">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.populate_rank_entry_frame">[docs]</a>
+    <span class="k">def</span> <span class="nf">populate_rank_entry_frame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">var_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds the widgets associated with each of the rank entries.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frame (CTkFrame): The frame that is to be populated.</span>
+<span class="sd">            text (str): The label text of the specific entry.</span>
+<span class="sd">            var_index: The index of the text variable in the ranking_buttons list that</span>
+<span class="sd">                       should be associated with this specific entry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                             <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+                             <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span><span class="p">[</span><span class="n">var_index</span><span class="p">])</span>
+
+        <span class="n">frame</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">frame</span><span class="o">.</span><span class="n">columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.algorithm_changed">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.algorithm_changed">[docs]</a>
+    <span class="k">def</span> <span class="nf">algorithm_changed</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles the change event of the algorithm selection option menu.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;Merge Sort&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_slider_row_state</span><span class="p">(</span>
+                <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_comparison_count</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ctk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;Rating&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_slider_row_state</span><span class="p">(</span>
+                <span class="kc">False</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hide_comparison_count</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_slider_row_state</span><span class="p">(</span>
+                <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_size_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comp_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_comparison_count</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_rating_options</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_rating_options</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hide_rating_options</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_ranking_options</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_ranking_options</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hide_ranking_options</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.change_slider_row_state">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.change_slider_row_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_slider_row_state</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">slider_frame</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">,</span>
+            <span class="n">comp_label</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Changes the state of the slider row.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (bool): Boolean indicating whether the slider row should be </span>
+<span class="sd">                          enabled or disabled.</span>
+<span class="sd">            slider_frame (CTkFrame): The frame containing the slider.</span>
+<span class="sd">            comp_label (CTkLabel): The label for comparison size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
+            <span class="n">comp_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+            <span class="n">slider_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">comp_label</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+            <span class="n">slider_frame</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.update_comparison_size">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.update_comparison_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_comparison_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the comparison size label based on the slider value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (int): The current slider value.</span>
+<span class="sd">            label (CTkLabel): The label to be updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_ranking_options</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_ranking_options</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hide_ranking_options</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.select_directory">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.select_directory">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkToplevel</span><span class="p">,</span>
+                         <span class="n">directory_var</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback function to select a directory using a file dialog.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (CTkToplevel): The root window or parent widget.</span>
+<span class="sd">            directory_var (StringVar): The element to store the selected </span>
+<span class="sd">            directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">directory_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">res_directory</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">filedialog</span><span class="o">.</span><span class="n">askdirectory</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">initialdir</span><span class="o">=</span><span class="n">current_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res_directory</span><span class="p">:</span>
+            <span class="n">directory_var</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">res_directory</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.refresh_rating_buttons">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.refresh_rating_buttons">[docs]</a>
+    <span class="k">def</span> <span class="nf">refresh_rating_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Repopulates the rating buttons list with the current row view.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">button</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_row</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">button</span><span class="p">)</span>
+
+        <span class="n">add_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ratings_list</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Add Rating&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_option</span><span class="p">)</span>
+        <span class="n">add_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">),</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.append_row">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.append_row">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">button_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a row to the rating buttons list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the row in the list which it is supposed to be</span>
+<span class="sd">                         added to.</span>
+<span class="sd">            button_text (str): The currently assigned text of the rating button.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ratings_list</span><span class="p">)</span>
+
+        <span class="n">row</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+
+        <span class="n">button_value</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">row</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Value: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">),</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="n">button_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_index</span> <span class="o">==</span> <span class="n">index</span><span class="p">:</span>
+
+            <span class="n">text_var</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">button_text</span><span class="p">)</span>
+
+            <span class="n">text_entry</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkEntry</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="n">text_var</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+            <span class="n">text_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+            <span class="n">ok_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">button_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Ok&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">56</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">text_var</span><span class="o">=</span><span class="n">text_var</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_rating</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">text_var</span><span class="p">))</span>
+            <span class="n">cancel_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">button_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">56</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel_edit</span><span class="p">)</span>
+
+            <span class="n">ok_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">cancel_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">button_text</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">button_text</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+            <span class="n">button_up_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span>
+            <span class="n">button_down_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span>
+
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">button_up_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span>
+
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">button_down_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span>
+
+            <span class="n">button_up</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">button_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;▲&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">button_up_state</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_up</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">button_down</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">button_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;▼&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">button_down_state</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_down</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">edit_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">button_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">56</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="n">delete_button_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">NORMAL</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">delete_button_state</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">DISABLED</span>
+
+            <span class="n">delete_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">button_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="s2">&quot;#ed022a&quot;</span><span class="p">,</span>
+                <span class="n">hover_color</span><span class="o">=</span><span class="s2">&quot;#bf0021&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">delete_button_state</span><span class="p">,</span>
+                <span class="n">text_color_disabled</span><span class="o">=</span><span class="s2">&quot;#BBBBBB&quot;</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_rating</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="n">button_text</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">button_up</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">button_down</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">edit_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">delete_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">button_value</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">button_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.delete_rating">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.delete_rating">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_rating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a rating from the list of ratings.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the rating that is to be removed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">del</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.move_up">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.move_up">[docs]</a>
+    <span class="k">def</span> <span class="nf">move_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Moves a rating up in the list of ratings (decreases its index in the list by 1).</span>
+<span class="sd">        Other elements are moved accordingly.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the rating that is to be moved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.move_down">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.move_down">[docs]</a>
+    <span class="k">def</span> <span class="nf">move_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Moves a rating down in the list of ratings (increases its index in the list by </span>
+<span class="sd">        1). Other elements are moved accordingly.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the rating that is to be moved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.cancel_edit">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.cancel_edit">[docs]</a>
+    <span class="k">def</span> <span class="nf">cancel_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Brings (all) rows out of edit mode.        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.update_rating">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.update_rating">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_rating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the text of a rating specified by the index.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the rating that is to be updated.</span>
+<span class="sd">            value (str): The new text associated with that rating.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># make some checks perhaps...</span>
+        <span class="n">new_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.edit">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.edit">[docs]</a>
+    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Brings a rating row into edit mode.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): The index of the rating that is to be set to edit mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_index</span> <span class="o">=</span> <span class="n">index</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.add_option">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.add_option">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new rating button (and row) and brings it into edit mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_rating_buttons</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.should_show_rating_options">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.should_show_rating_options">[docs]</a>
+    <span class="k">def</span> <span class="nf">should_show_rating_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the current selected algorithm implies that rating options should be </span>
+<span class="sd">        shown.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if rating options should be shown, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">show_rating</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Rating&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Hybrid&quot;</span>
+
+        <span class="k">return</span> <span class="n">show_rating</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.should_show_ranking_options">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.should_show_ranking_options">[docs]</a>
+    <span class="k">def</span> <span class="nf">should_show_ranking_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the current selected algorithm implies that ranking options should be </span>
+<span class="sd">        shown.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if ranking options should be shown, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">compatible_algorithm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True Skill&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Merge Sort&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Hybrid&quot;</span>
+
+        <span class="k">return</span> <span class="n">compatible_algorithm</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.should_show_switches">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.should_show_switches">[docs]</a>
+    <span class="k">def</span> <span class="nf">should_show_switches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the current selected algorithm and comparison size implies that the </span>
+<span class="sd">        user should have the option to add the equal and much greater/smaller ranking </span>
+<span class="sd">        buttons.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if buttons should be available, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_selection</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Merge Sort&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.create_save">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.create_save">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_save</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">:</span> <span class="n">sa</span><span class="o">.</span><span class="n">SortingAlgorithm</span><span class="p">,</span>
+            <span class="n">comparison_size</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkSlider</span><span class="p">,</span> <span class="n">image_directory</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">,</span>
+            <span class="n">scroll_enabled</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">BooleanVar</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and saves the annotation item.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (StringVar): Name of the annotation item.</span>
+<span class="sd">            algorithm (SortingAlgorithm): Selected algorithm for sorting </span>
+<span class="sd">                                          the images.</span>
+<span class="sd">            comparison_size (CTkSlider): Slider holding the size of the </span>
+<span class="sd">                                         comparison.</span>
+<span class="sd">            image_directory (StringVar): Directory path containing the </span>
+<span class="sd">                                         image files.</span>
+<span class="sd">            scroll_enabled (BooleanVar): A checkbox with a boolean indicating </span>
+<span class="sd">                                         whether scrolling is enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">directory_value</span> <span class="o">=</span> <span class="n">image_directory</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">name_value</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">alg_value</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">comparison_size_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comparison_size</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+        <span class="n">scroll_enabled_value</span> <span class="o">=</span> <span class="n">scroll_enabled</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="n">comp_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
+            <span class="n">comp_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comparison_count_entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+        <span class="n">rating_buttons</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">rating_prompt</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_rating_options</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">rating_buttons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_buttons</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="n">rating_prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_prompt</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="n">custom_rankings</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">ranking_prompt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_show_ranking_options</span><span class="p">():</span>
+
+            <span class="n">custom_rankings</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_equals_switch</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="n">custom_rankings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+            <span class="n">custom_rankings</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="p">)]</span> <span class="o">+</span> <span class="n">custom_rankings</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_much_greater_switch</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="n">custom_rankings</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="p">)]</span> <span class="o">+</span> <span class="n">custom_rankings</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ranking_buttons</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="n">ranking_prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranking_prompt</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="n">saves_handler</span><span class="o">.</span><span class="n">create_save</span><span class="p">(</span>
+            <span class="n">name_value</span><span class="p">,</span> <span class="n">alg_value</span><span class="p">,</span> <span class="n">comparison_size_value</span><span class="p">,</span> <span class="n">directory_value</span><span class="p">,</span>
+            <span class="n">scroll_enabled_value</span><span class="p">,</span> <span class="n">rating_buttons</span><span class="p">,</span> <span class="n">rating_prompt</span><span class="p">,</span>
+            <span class="n">custom_rankings</span><span class="p">,</span> <span class="n">ranking_prompt</span><span class="p">,</span> <span class="n">comp_max</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_callback</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AdvancedCreationMenu.validate">
+<a class="viewcode-back" href="../../views.html#views.advanced_creation_menu.AdvancedCreationMenu.validate">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validation function used to see if entry contains an integer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): The string that is to be validated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">value</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

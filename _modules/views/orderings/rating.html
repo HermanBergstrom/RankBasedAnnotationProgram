@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views.orderings.rating &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Rank-Based Annotation Program</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">views.orderings.rating</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for views.orderings.rating</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">import</span> <span class="nn">customtkinter</span> <span class="k">as</span> <span class="nn">ctk</span>
+
+<span class="kn">from</span> <span class="nn">pop_outs.is_finished_pop_out</span> <span class="kn">import</span> <span class="n">IsFinishedPopOut</span>
+<span class="kn">from</span> <span class="nn">views.orderings.ordering</span> <span class="kn">import</span> <span class="n">OrderingScreen</span>
+
+
+<div class="viewcode-block" id="RatingScreen">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen">[docs]</a>
+<span class="k">class</span> <span class="nc">RatingScreen</span><span class="p">(</span><span class="n">OrderingScreen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A screen for rating.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTk</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">menu_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+            <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reload_ordering_screen</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+            <span class="n">hybrid_transition_made</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">root_bind_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the RatingScreen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (CTk): The root cutom tkinter object.</span>
+<span class="sd">            save_obj (dict): The save object containing various parameters.</span>
+<span class="sd">            menu_callback (function): The callback function for the menu.</span>
+<span class="sd">            user (str): The user currently annotating.</span>
+<span class="sd">            reload_ordering_screen (function): Callback function to reload the </span>
+<span class="sd">                                               ordering screen.</span>
+<span class="sd">            hybrid_transition_made (bool): Flag indicating whether hybrid </span>
+<span class="sd">                                           transition was made.</span>
+<span class="sd">            root_bind_callback (function): Callback function used to bind events to the</span>
+<span class="sd">                                           root element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">save_obj</span><span class="p">,</span> <span class="n">menu_callback</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span>
+                         <span class="n">reload_ordering_screen</span><span class="p">,</span> <span class="n">hybrid_transition_made</span><span class="p">,</span>
+                         <span class="n">root_bind_callback</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;_internal/prompts.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">prompts</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="n">rating_buttons</span> <span class="o">=</span> <span class="n">prompts</span><span class="p">[</span><span class="s1">&#39;rating_buttons&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;custom_ratings&quot;</span> <span class="ow">in</span> <span class="n">save_obj</span><span class="p">:</span>
+            <span class="n">rating_buttons</span> <span class="o">=</span> <span class="n">save_obj</span><span class="p">[</span><span class="s2">&quot;custom_ratings&quot;</span><span class="p">]</span>
+
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompts</span><span class="p">[</span><span class="s1">&#39;rating_prompt&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;custom_rating_prompt&quot;</span> <span class="ow">in</span> <span class="n">save_obj</span><span class="p">:</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="n">save_obj</span><span class="p">[</span><span class="s1">&#39;custom_rating_prompt&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">question</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">button</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rating_buttons</span><span class="p">):</span>
+            <span class="n">ctk_button</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkButton</span><span class="p">(</span>
+                <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">buttons_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">button</span> <span class="o">+</span>
+                <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">index</span><span class="p">),</span>
+                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Helvetica bold&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ctk_button</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                                    <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_shortcmd</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;KeyRelease-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_shortcmd_up</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_enter</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_bind_callback</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Tab&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_tab</span><span class="p">())</span>
+
+<div class="viewcode-block" id="RatingScreen.display">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.display">[docs]</a>
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display the rating screen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_elapsed_time_prev</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">uniform</span><span class="o">=</span><span class="s2">&quot;ordering&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comparison_bar</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">question</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">button</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">padx</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">padx</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">padx</span> <span class="o">=</span> <span class="mi">10</span>
+
+            <span class="n">button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="n">padx</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_duration_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">relx</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;ne&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_count_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">back_button</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer_after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_finished_check</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display_new_comparison</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.init_image_frames">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.init_image_frames">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the image frames.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayed_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_frames</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">image_frame</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkFrame</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images_frame</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_frame</span><span class="p">)</span>
+
+        <span class="n">image_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="n">displayed_image</span> <span class="o">=</span> <span class="n">ctk</span><span class="o">.</span><span class="n">CTkLabel</span><span class="p">(</span>
+            <span class="n">master</span><span class="o">=</span><span class="n">image_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">displayed_image</span><span class="p">)</span>
+
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                             <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;MouseWheel&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll</span><span class="p">(</span>
+                <span class="n">event</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;MouseWheel&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll</span><span class="p">(</span>
+                <span class="n">event</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Button-4&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_up</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Button-4&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_up</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">image_frame</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Button-5&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_down</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Button-5&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_image_scroll_down</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Enter&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_image_hover_idx</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">displayed_image</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;Leave&gt;&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_image_hover_idx</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.display_new_comparison">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.display_new_comparison">[docs]</a>
+    <span class="k">def</span> <span class="nf">display_new_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display a new comparison.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_tab</span><span class="p">()</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">get_comparison</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="c1"># load initial images</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_initial_image</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mi">0</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+                <span class="n">ctk_imgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_2_CTkImage</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key</span><span class="p">,</span> <span class="n">ctk_imgs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctk_imgs</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">grid_remove</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar_progress</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_sort_alg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">undo_label</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_alg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_2_CTkImage</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="mi">0</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_images</span><span class="p">()</span>
+            <span class="n">IsFinishedPopOut</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">back_to_menu</span><span class="p">,</span> <span class="s1">&#39;no annotations&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.on_tab">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.on_tab">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the tab key event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.reset_tab">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.reset_tab">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the tab index and remove the highlight.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.on_shortcmd_up">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.on_shortcmd_up">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_shortcmd_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the key release event for a rating button.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.highlight">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.highlight">[docs]</a>
+    <span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Highlight a button widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">fg_color</span><span class="o">=</span><span class="n">widget</span><span class="o">.</span><span class="n">cget</span><span class="p">(</span><span class="s2">&quot;hover_color&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.remove_highlight">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.remove_highlight">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove the highlight from a button widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">fg_color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#3a7ebf&#39;</span><span class="p">,</span> <span class="s1">&#39;#1f538d&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.on_enter">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.on_enter">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_enter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the Enter key event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_index</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.on_shortcmd">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.on_shortcmd">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_shortcmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle the key press event for a rating button.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab_items</span><span class="p">[</span><span class="n">index</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="RatingScreen.submit">
+<a class="viewcode-back" href="../../../views.orderings.html#views.orderings.rating.RatingScreen.submit">[docs]</a>
+    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lvl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submit the rating for a comparison.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loading</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">submit_comparison</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">lvl</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

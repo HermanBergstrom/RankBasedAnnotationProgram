@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils package &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="views package" href="views.html" />
+    <link rel="prev" title="sorting_algorithms" href="sorting_algorithms.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Rank-Based Annotation Program</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gui.html">gui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting_algorithms.html">sorting_algorithms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">utils package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.convergence">utils.convergence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.convergence.get_convergence"><code class="docutils literal notranslate"><span class="pre">get_convergence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.convergence.moving_average"><code class="docutils literal notranslate"><span class="pre">moving_average()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.convergence.rmses_inference"><code class="docutils literal notranslate"><span class="pre">rmses_inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.convergence.update_convergence_save"><code class="docutils literal notranslate"><span class="pre">update_convergence_save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.ctk_utils">utils.ctk_utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.add_hover"><code class="docutils literal notranslate"><span class="pre">add_hover()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.add_hover_to_children"><code class="docutils literal notranslate"><span class="pre">add_hover_to_children()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.center"><code class="docutils literal notranslate"><span class="pre">center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.file_2_CTkImage"><code class="docutils literal notranslate"><span class="pre">file_2_CTkImage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.highlight"><code class="docutils literal notranslate"><span class="pre">highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.highlight_label"><code class="docutils literal notranslate"><span class="pre">highlight_label()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.remove_highlight"><code class="docutils literal notranslate"><span class="pre">remove_highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.remove_highlight_label"><code class="docutils literal notranslate"><span class="pre">remove_highlight_label()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.ctk_utils.remove_hover"><code class="docutils literal notranslate"><span class="pre">remove_hover()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.recomputation">utils.recomputation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.recomputation.recompute_hybridtrueskill"><code class="docutils literal notranslate"><span class="pre">recompute_hybridtrueskill()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.recomputation.recompute_ratings"><code class="docutils literal notranslate"><span class="pre">recompute_ratings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.recomputation.recompute_trueskill"><code class="docutils literal notranslate"><span class="pre">recompute_trueskill()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils.saves_handler">utils.saves_handler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#utils.saves_handler.create_save"><code class="docutils literal notranslate"><span class="pre">create_save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.saves_handler.get_application_path"><code class="docutils literal notranslate"><span class="pre">get_application_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.saves_handler.get_full_path"><code class="docutils literal notranslate"><span class="pre">get_full_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.saves_handler.get_path_to_save"><code class="docutils literal notranslate"><span class="pre">get_path_to_save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utils.saves_handler.save_algorithm_pickle"><code class="docutils literal notranslate"><span class="pre">save_algorithm_pickle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">views package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">widgets package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Rank-Based Annotation Program</a></li>
+      <li class="breadcrumb-item active">utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils-package">
+<h1>utils package<a class="headerlink" href="#utils-package" title="Link to this heading"></a></h1>
+<section id="module-utils.convergence">
+<span id="utils-convergence"></span><h2>utils.convergence<a class="headerlink" href="#module-utils.convergence" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.convergence.get_convergence">
+<span class="sig-name descname"><span class="pre">get_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/convergence.html#get_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.convergence.get_convergence" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the convergence data from the given ‘save’ dictionary and provides
+suitable representation of the RMS errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – The dictionary containing the necessary information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the convergence data (RMS errors).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.convergence.moving_average">
+<span class="sig-name descname"><span class="pre">moving_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/convergence.html#moving_average"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.convergence.moving_average" title="Link to this definition"></a></dt>
+<dd><p>Computes the moving average of a given data list with a specified window size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – A list of numerical values.</p></li>
+<li><p><strong>window</strong> (<em>int</em>) – The size of the window for moving average computation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the moving average of the input data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.convergence.rmses_inference">
+<span class="sig-name descname"><span class="pre">rmses_inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_ratings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_alg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.TrueSkill" title="sorting_algorithms.TrueSkill"><span class="pre">TrueSkill</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/convergence.html#rmses_inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.convergence.rmses_inference" title="Link to this definition"></a></dt>
+<dd><p>Computes RMS errors for the provided ‘save’ using the appropriate algorithm and
+saves the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save</strong> (<em>dict</em>) – The dictionary containing the necessary information.</p></li>
+<li><p><strong>prev_ratings</strong> (<em>dict</em>) – The previous ratings dictionary.</p></li>
+<li><p><strong>sort_alg</strong> (<a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.TrueSkill" title="sorting_algorithms.TrueSkill"><em>TrueSkill</em></a>) – The TrueSkill sorting algorithm.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.convergence.update_convergence_save">
+<span class="sig-name descname"><span class="pre">update_convergence_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/convergence.html#update_convergence_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.convergence.update_convergence_save" title="Link to this definition"></a></dt>
+<dd><p>Computes and returns the RMS errors for the provided ‘save’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – The dictionary containing the necessary information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed RMS errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils.ctk_utils">
+<span id="utils-ctk-utils"></span><h2>utils.ctk_utils<a class="headerlink" href="#module-utils.ctk_utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.add_hover">
+<span class="sig-name descname"><span class="pre">add_hover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#add_hover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.add_hover" title="Link to this definition"></a></dt>
+<dd><p>Add hover effect to the widget and its children.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>widget</strong> (<em>CTkBaseClass</em>) – The widget to add the hover effect to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.add_hover_to_children">
+<span class="sig-name descname"><span class="pre">add_hover_to_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child_widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#add_hover_to_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.add_hover_to_children" title="Link to this definition"></a></dt>
+<dd><p>Add hover effect to the child ctk widget and its children.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> – The parent ctk widget.</p></li>
+<li><p><strong>child_widget</strong> – The child ctk widget to add the hover effect to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.center">
+<span class="sig-name descname"><span class="pre">center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/ctk_utils.html#center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.center" title="Link to this definition"></a></dt>
+<dd><p>Calculates the x and y coordinates to center the CTk root window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> (<em>CTk</em>) – The root cutom tkinter object.</p></li>
+<li><p><strong>w</strong> (<em>int</em>) – The width of the window.</p></li>
+<li><p><strong>h</strong> (<em>int</em>) – The height of the window.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The x and y coordinates to center the window.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.file_2_CTkImage">
+<span class="sig-name descname"><span class="pre">file_2_CTkImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">customtkinter.CTkImage</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/ctk_utils.html#file_2_CTkImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.file_2_CTkImage" title="Link to this definition"></a></dt>
+<dd><p>Convert an image file to a list of CTkImage objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>img_src</strong> (<em>str</em>) – The path to the image file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of CTkImage objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[CTkImage]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the image file is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.highlight">
+<span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">og_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.highlight" title="Link to this definition"></a></dt>
+<dd><p>Add highlight effect to the ctk widget by changing its foreground color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> – The ctk widget to highlight.</p></li>
+<li><p><strong>color</strong> – The original foreground color of the widget.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.highlight_label">
+<span class="sig-name descname"><span class="pre">highlight_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#highlight_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.highlight_label" title="Link to this definition"></a></dt>
+<dd><p>Highlight the label by adjusting its text color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>CTkLabel</em>) – The widget containing the label to be highlighted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.remove_highlight">
+<span class="sig-name descname"><span class="pre">remove_highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">og_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#remove_highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.remove_highlight" title="Link to this definition"></a></dt>
+<dd><p>Remove highlight effect from the ctk widget by restoring its original
+foreground color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> – The ctk widget to remove the highlight effect from.</p></li>
+<li><p><strong>color</strong> – The original foreground color of the widget.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.remove_highlight_label">
+<span class="sig-name descname"><span class="pre">remove_highlight_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#remove_highlight_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.remove_highlight_label" title="Link to this definition"></a></dt>
+<dd><p>Remove the highlight from the label by setting its text color to a
+default value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>CTkLabel</em>) – The label from which to remove the highlight.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ctk_utils.remove_hover">
+<span class="sig-name descname"><span class="pre">remove_hover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkBaseClass</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ctk_utils.html#remove_hover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ctk_utils.remove_hover" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-utils.recomputation">
+<span id="utils-recomputation"></span><h2>utils.recomputation<a class="headerlink" href="#module-utils.recomputation" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.recomputation.recompute_hybridtrueskill">
+<span class="sig-name descname"><span class="pre">recompute_hybridtrueskill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.HybridTrueSkill" title="sorting_algorithms.HybridTrueSkill"><span class="pre">HybridTrueSkill</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/recomputation.html#recompute_hybridtrueskill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.recomputation.recompute_hybridtrueskill" title="Link to this definition"></a></dt>
+<dd><p>Recomputes the HybridTrueSkill algorithm based on the data in ‘save’ and returns
+the HybridTrueSkill object and computed RMS errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – A dictionary containing the necessary information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the updated
+HybridTrueSkill object and a list of computed RMS errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.HybridTrueSkill" title="sorting_algorithms.HybridTrueSkill">HybridTrueSkill</a>, List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.recomputation.recompute_ratings">
+<span class="sig-name descname"><span class="pre">recompute_ratings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.RatingAlgorithm" title="sorting_algorithms.RatingAlgorithm"><span class="pre">RatingAlgorithm</span></a></span></span><a class="reference internal" href="_modules/utils/recomputation.html#recompute_ratings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.recomputation.recompute_ratings" title="Link to this definition"></a></dt>
+<dd><p>Recomputes the ratings based on the data in ‘save’ using the rating algorithm and
+returns the updated rating algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – A dictionary containing the necessary information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated rating algorithm object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.RatingAlgorithm" title="sorting_algorithms.RatingAlgorithm">RatingAlgorithm</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.recomputation.recompute_trueskill">
+<span class="sig-name descname"><span class="pre">recompute_trueskill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.TrueSkill" title="sorting_algorithms.TrueSkill"><span class="pre">TrueSkill</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/utils/recomputation.html#recompute_trueskill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.recomputation.recompute_trueskill" title="Link to this definition"></a></dt>
+<dd><p>Recomputes the TrueSkill algorithm based on the data in ‘save’ and returns the
+sorting algorithm and appropriate measures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – A dictionary containing the necessary information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the updated TrueSkill
+object and a list of computed RMS errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="sorting_algorithms.html#sorting_algorithms.TrueSkill" title="sorting_algorithms.TrueSkill">TrueSkill</a>, List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils.saves_handler">
+<span id="utils-saves-handler"></span><h2>utils.saves_handler<a class="headerlink" href="#module-utils.saves_handler" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.saves_handler.create_save">
+<span class="sig-name descname"><span class="pre">create_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scroll_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating_buttons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating_prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_rankings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranking_prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/saves_handler.html#create_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.saves_handler.create_save" title="Link to this definition"></a></dt>
+<dd><p>Creates and saves the annotation item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the annotation item.</p></li>
+<li><p><strong>algorithm</strong> (<em>str</em>) – Selected algorithm for sorting the images.</p></li>
+<li><p><strong>comparison_size</strong> (<em>int</em>) – The size of the comparison.</p></li>
+<li><p><strong>image_directory</strong> (<em>str</em>) – Directory path containing the image files.</p></li>
+<li><p><strong>scroll_enabled</strong> (<em>bool</em>) – A boolean indicating whether scrolling is enabled.</p></li>
+<li><p><strong>rating_buttons</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list containing the buttons which should
+be available when rating.</p></li>
+<li><p><strong>rating_prompt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A new prompt which users are given when rating.</p></li>
+<li><p><strong>custom_rankings</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list containing the options available
+when ranking.</p></li>
+<li><p><strong>ranking_prompt</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A new prompt which users are given when ranking.</p></li>
+<li><p><strong>comp_max</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The total amount of allowed comparisons.</p></li>
+<li><p><strong>min_ip</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – Whether or not a MinIP image should be displayed next
+to the stacks.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.saves_handler.get_application_path">
+<span class="sig-name descname"><span class="pre">get_application_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/utils/saves_handler.html#get_application_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.saves_handler.get_application_path" title="Link to this definition"></a></dt>
+<dd><p>Get the application path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The application path as a string, or None if the path
+cannot be determined.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[str, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.saves_handler.get_full_path">
+<span class="sig-name descname"><span class="pre">get_full_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/utils/saves_handler.html#get_full_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.saves_handler.get_full_path" title="Link to this definition"></a></dt>
+<dd><p>Get the full path of a file or directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – The relative path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The full path.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.saves_handler.get_path_to_save">
+<span class="sig-name descname"><span class="pre">get_path_to_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/utils/saves_handler.html#get_path_to_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.saves_handler.get_path_to_save" title="Link to this definition"></a></dt>
+<dd><p>Get the path to save a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – A dictionary containing information about the save.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path where the file should be saved.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.saves_handler.save_algorithm_pickle">
+<span class="sig-name descname"><span class="pre">save_algorithm_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/saves_handler.html#save_algorithm_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.saves_handler.save_algorithm_pickle" title="Link to this definition"></a></dt>
+<dd><p>Save the current state of the algorithm to a pickle file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>dict</em>) – A dictionary containing information about the save.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sorting_algorithms.html" class="btn btn-neutral float-left" title="sorting_algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="views.html" class="btn btn-neutral float-right" title="views package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views.orderings package &mdash; Rank-Based Annotation Program  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="widgets package" href="widgets.html" />
+    <link rel="prev" title="views package" href="views.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Rank-Based Annotation Program
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Rank-Based Annotation Program</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gui.html">gui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting_algorithms.html">sorting_algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="views.html">views package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="views.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">views.orderings package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="views.html#module-views.advanced_creation_menu">views.advanced_creation_menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="views.html#module-views.advanced_information_page">views.advanced_information_page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="views.html#module-views.menu">views.menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="views.html#module-views">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">widgets package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Rank-Based Annotation Program</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Rank-Based Annotation Program</a></li>
+          <li class="breadcrumb-item"><a href="views.html">views package</a></li>
+      <li class="breadcrumb-item active">views.orderings package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/views.orderings.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="views-orderings-package">
+<h1>views.orderings package<a class="headerlink" href="#views-orderings-package" title="Link to this heading"></a></h1>
+<section id="module-views.orderings.multiordering">
+<span id="views-orderings-multiordering"></span><h2>views.orderings.multiordering<a class="headerlink" href="#module-views.orderings.multiordering" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultiOrderingScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reload_ordering_screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_bind_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#views.orderings.ordering.OrderingScreen" title="views.orderings.ordering.OrderingScreen"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderingScreen</span></code></a></p>
+<p>A screen for multi-ordering.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.allow_motion">
+<span class="sig-name descname"><span class="pre">allow_motion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.allow_motion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.allow_motion" title="Link to this definition"></a></dt>
+<dd><p>Allows motion after a delay.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.create_image_widget">
+<span class="sig-name descname"><span class="pre">create_image_widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">customtkinter.CTkFrame</span></span></span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.create_image_widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.create_image_widget" title="Link to this definition"></a></dt>
+<dd><p>Create a widget for displaying an image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image_idx</strong> (<em>int</em>) – The index of the image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created image widget.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CTkFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.display" title="Link to this definition"></a></dt>
+<dd><p>Display the multi-ordering screen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.display_new_comparison">
+<span class="sig-name descname"><span class="pre">display_new_comparison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.display_new_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.display_new_comparison" title="Link to this definition"></a></dt>
+<dd><p>Display a new comparison of images.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.init_diff_level_buttons">
+<span class="sig-name descname"><span class="pre">init_diff_level_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.init_diff_level_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.init_diff_level_buttons" title="Link to this definition"></a></dt>
+<dd><p>Initialize the difference level buttons.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.init_image_frames">
+<span class="sig-name descname"><span class="pre">init_image_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.init_image_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.init_image_frames" title="Link to this definition"></a></dt>
+<dd><p>Initialize the image frames.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.move_left">
+<span class="sig-name descname"><span class="pre">move_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.move_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.move_left" title="Link to this definition"></a></dt>
+<dd><p>Move an image to the left in the comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the image to move.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.move_right">
+<span class="sig-name descname"><span class="pre">move_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.move_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.move_right" title="Link to this definition"></a></dt>
+<dd><p>Move an image to the right in the comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the image to move.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.on_drag_motion">
+<span class="sig-name descname"><span class="pre">on_drag_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.on_drag_motion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.on_drag_motion" title="Link to this definition"></a></dt>
+<dd><p>Event handler for when dragging is in motion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>Event</em>) – The Tkinter event object.</p></li>
+<li><p><strong>frame</strong> (<em>CTkFrame</em>) – The frame where the event occurred.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.on_drag_start">
+<span class="sig-name descname"><span class="pre">on_drag_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.on_drag_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.on_drag_start" title="Link to this definition"></a></dt>
+<dd><p>Event handler for when dragging starts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>Event</em>) – The Tkinter event object.</p></li>
+<li><p><strong>frame</strong> (<em>CTkFrame</em>) – The frame where the event occurred.</p></li>
+<li><p><strong>idx</strong> (<em>int</em>) – The index of the image being dragged.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.on_drag_stop">
+<span class="sig-name descname"><span class="pre">on_drag_stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.on_drag_stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.on_drag_stop" title="Link to this definition"></a></dt>
+<dd><p>Event handler for when dragging stops.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>Event</em>) – The Tkinter event object.</p></li>
+<li><p><strong>frame</strong> (<em>CTkFrame</em>) – The frame where the event occurred.</p></li>
+<li><p><strong>idx</strong> (<em>int</em>) – The index of the image being dragged.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.reset_diff_levels">
+<span class="sig-name descname"><span class="pre">reset_diff_levels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.reset_diff_levels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.reset_diff_levels" title="Link to this definition"></a></dt>
+<dd><p>Reset the difference levels to their default values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.submit" title="Link to this definition"></a></dt>
+<dd><p>Submits the comparison.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.multiordering.MultiOrderingScreen.update_diff_labels">
+<span class="sig-name descname"><span class="pre">update_diff_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_diff_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.IntVar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTkLabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/multiordering.html#MultiOrderingScreen.update_diff_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.multiordering.MultiOrderingScreen.update_diff_labels" title="Link to this definition"></a></dt>
+<dd><p>Update the labels for the difference levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>int_diff_level</strong> (<em>IntVar</em>) – The difficulty level as an integer
+variable.</p></li>
+<li><p><strong>label</strong> (<em>CTkLabel</em>) – The label to update with the difficulty
+level text.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views.orderings.ordering">
+<span id="views-orderings-ordering"></span><h2>views.orderings.ordering<a class="headerlink" href="#module-views.orderings.ordering" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrderingScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reload_ordering_screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hybrid_transition_made</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_bind_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing the ordering screen for ranking and rating images.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.back_to_menu">
+<span class="sig-name descname"><span class="pre">back_to_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remove_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.back_to_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.back_to_menu" title="Link to this definition"></a></dt>
+<dd><p>Return to the main menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remove_after</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to remove the timer.
+Defaults to True.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.file_2_CTkImage">
+<span class="sig-name descname"><span class="pre">file_2_CTkImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">customtkinter.CTkImage</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.file_2_CTkImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.file_2_CTkImage" title="Link to this definition"></a></dt>
+<dd><p>Convert an image file to a list of CTkImage objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_src</strong> (<em>str</em>) – The path to the image file.</p></li>
+<li><p><strong>min_ip</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – If True the image is instead loaded from the
+…_MinIP directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of CTkImage objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[CTkImage]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the image file is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.is_finished_check">
+<span class="sig-name descname"><span class="pre">is_finished_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.is_finished_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.is_finished_check" title="Link to this definition"></a></dt>
+<dd><p>Check if the sorting algorithm is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the sorting algorithm is finished, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.load_initial_image">
+<span class="sig-name descname"><span class="pre">load_initial_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">customtkinter.CTkImage</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.load_initial_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.load_initial_image" title="Link to this definition"></a></dt>
+<dd><p>Load the initial image for display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>img_src</strong> (<em>str</em>) – The source of the image file to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of CTkImage objects representing the loaded image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.on_image_key_scroll">
+<span class="sig-name descname"><span class="pre">on_image_key_scroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.on_image_key_scroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.on_image_key_scroll" title="Link to this definition"></a></dt>
+<dd><p>Handle the image scroll event triggered by a key press.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir</strong> (<em>str</em>) – The direction of the scroll (‘up’ or ‘down’).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.on_image_scroll">
+<span class="sig-name descname"><span class="pre">on_image_scroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.on_image_scroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.on_image_scroll" title="Link to this definition"></a></dt>
+<dd><p>Handle the image scroll event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>Event</em>) – The tkinter scroll event.</p></li>
+<li><p><strong>idx</strong> (<em>int</em>) – The index of the image.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.on_image_scroll_down">
+<span class="sig-name descname"><span class="pre">on_image_scroll_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.on_image_scroll_down"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.on_image_scroll_down" title="Link to this definition"></a></dt>
+<dd><p>Handle the downward image scroll event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – The index of the image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.on_image_scroll_up">
+<span class="sig-name descname"><span class="pre">on_image_scroll_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.on_image_scroll_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.on_image_scroll_up" title="Link to this definition"></a></dt>
+<dd><p>Handle the upward image scroll event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – The index of the image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.remove_submission_timeout">
+<span class="sig-name descname"><span class="pre">remove_submission_timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.remove_submission_timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.remove_submission_timeout" title="Link to this definition"></a></dt>
+<dd><p>Remove the submission timeout flag.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.save_sorted_images">
+<span class="sig-name descname"><span class="pre">save_sorted_images</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.save_sorted_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.save_sorted_images" title="Link to this definition"></a></dt>
+<dd><p>Save the sorted images to the appropriate directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.save_to_csv_file">
+<span class="sig-name descname"><span class="pre">save_to_csv_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_annotatation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.save_to_csv_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.save_to_csv_file" title="Link to this definition"></a></dt>
+<dd><p>Save the result and level of the comparison to a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – The result of the comparison.</p></li>
+<li><p><strong>lvls</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – The level associated with the
+comparison.</p></li>
+<li><p><strong>df_annotatation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether it is a dataframe
+annotation. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.set_image_hover_idx">
+<span class="sig-name descname"><span class="pre">set_image_hover_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.set_image_hover_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.set_image_hover_idx" title="Link to this definition"></a></dt>
+<dd><p>Set the index of the image being hovered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – The index of the image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.submit_comparison">
+<span class="sig-name descname"><span class="pre">submit_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_annotatation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.submit_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.submit_comparison" title="Link to this definition"></a></dt>
+<dd><p>Submit a comparison of images with their associated level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keys</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – The key or keys representing the
+images being compared.</p></li>
+<li><p><strong>lvl</strong> (<em>int</em>) – The level associated with the comparison.</p></li>
+<li><p><strong>df_annotatation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether it is a dataframe
+annotation. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.submit_path">
+<span class="sig-name descname"><span class="pre">submit_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.submit_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.submit_path" title="Link to this definition"></a></dt>
+<dd><p>Submit the image directory path and update the display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the image directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.undo_annotation">
+<span class="sig-name descname"><span class="pre">undo_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.undo_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.undo_annotation" title="Link to this definition"></a></dt>
+<dd><p>Undo the previous annotation and update the display.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.undo_csv_file">
+<span class="sig-name descname"><span class="pre">undo_csv_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.undo_csv_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.undo_csv_file" title="Link to this definition"></a></dt>
+<dd><p>Undo the last entry in the CSV file by marking it as undone.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.update_comparison_bar">
+<span class="sig-name descname"><span class="pre">update_comparison_bar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.update_comparison_bar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.update_comparison_bar" title="Link to this definition"></a></dt>
+<dd><p>Update the comparison bar value based on the current comparison count.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.update_images">
+<span class="sig-name descname"><span class="pre">update_images</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.update_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.update_images" title="Link to this definition"></a></dt>
+<dd><p>Update the displayed images on the screen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.ordering.OrderingScreen.update_time">
+<span class="sig-name descname"><span class="pre">update_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/ordering.html#OrderingScreen.update_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.ordering.OrderingScreen.update_time" title="Link to this definition"></a></dt>
+<dd><p>Update the displayed session duration time.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views.orderings.pairwiseordering">
+<span id="views-orderings-pairwiseordering"></span><h2>views.orderings.pairwiseordering<a class="headerlink" href="#module-views.orderings.pairwiseordering" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PairwiseOrderingScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reload_ordering_screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_bind_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#views.orderings.ordering.OrderingScreen" title="views.orderings.ordering.OrderingScreen"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderingScreen</span></code></a></p>
+<p>A screen for pairwise image ordering.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.check_df_for_comp">
+<span class="sig-name descname"><span class="pre">check_df_for_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.check_df_for_comp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.check_df_for_comp" title="Link to this definition"></a></dt>
+<dd><p>Check the data frame for previous comparisons and if they are
+enough and sufficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>keys</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The keys representing the current comparison.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The result of the comparison where 70% of users</dt><dd><p>assess the same difference level
+0 - if consensus is no difference
+1 or -1 - if consensus is that there is some order
+of the keys or None if not enough previous comparison are
+found.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.display_new_comparison">
+<span class="sig-name descname"><span class="pre">display_new_comparison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.display_new_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.display_new_comparison" title="Link to this definition"></a></dt>
+<dd><p>Display a new comparison in the pairwise ordering screen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.get_correct_value_for_index">
+<span class="sig-name descname"><span class="pre">get_correct_value_for_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.get_correct_value_for_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.get_correct_value_for_index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.highlight">
+<span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.highlight" title="Link to this definition"></a></dt>
+<dd><p>Highlight the specified widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>widget</strong> – The widget to highlight.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.init_image_frames">
+<span class="sig-name descname"><span class="pre">init_image_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.init_image_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.init_image_frames" title="Link to this definition"></a></dt>
+<dd><p>Display the pairwise ordering screen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.on_enter">
+<span class="sig-name descname"><span class="pre">on_enter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.on_enter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_enter" title="Link to this definition"></a></dt>
+<dd><p>Perform an action when the enter key is pressed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.on_shortcmd">
+<span class="sig-name descname"><span class="pre">on_shortcmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.on_shortcmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_shortcmd" title="Link to this definition"></a></dt>
+<dd><p>Perform an action when a short command key is pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the short command key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.on_shortcmd_up">
+<span class="sig-name descname"><span class="pre">on_shortcmd_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.on_shortcmd_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_shortcmd_up" title="Link to this definition"></a></dt>
+<dd><p>Perform an action when a short command key is released.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the short command key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.on_tab">
+<span class="sig-name descname"><span class="pre">on_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.on_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.on_tab" title="Link to this definition"></a></dt>
+<dd><p>Perform an action when the tab key is pressed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.remove_highlight">
+<span class="sig-name descname"><span class="pre">remove_highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.remove_highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.remove_highlight" title="Link to this definition"></a></dt>
+<dd><p>Remove the highlight from the specified widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>widget</strong> – The widget to remove the highlight from.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.reset_tab">
+<span class="sig-name descname"><span class="pre">reset_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.reset_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.reset_tab" title="Link to this definition"></a></dt>
+<dd><p>Reset the tab index and remove the highlight from the current tab item.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.pairwiseordering.PairwiseOrderingScreen.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">difflevel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_annotatation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/pairwiseordering.html#PairwiseOrderingScreen.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.pairwiseordering.PairwiseOrderingScreen.submit" title="Link to this definition"></a></dt>
+<dd><p>Submit a comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>difflevel</strong> (<em>int</em>) – The difference level of the comparison.</p></li>
+<li><p><strong>df_annotatation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to annotate the comparison
+in the data frame. Defaults to
+False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views.orderings.rating">
+<span id="views-orderings-rating"></span><h2>views.orderings.rating<a class="headerlink" href="#module-views.orderings.rating" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RatingScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">customtkinter.CTk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menu_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reload_ordering_screen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hybrid_transition_made</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_bind_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#views.orderings.ordering.OrderingScreen" title="views.orderings.ordering.OrderingScreen"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderingScreen</span></code></a></p>
+<p>A screen for rating.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.display" title="Link to this definition"></a></dt>
+<dd><p>Display the rating screen.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.display_new_comparison">
+<span class="sig-name descname"><span class="pre">display_new_comparison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.display_new_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.display_new_comparison" title="Link to this definition"></a></dt>
+<dd><p>Display a new comparison.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.highlight">
+<span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.highlight" title="Link to this definition"></a></dt>
+<dd><p>Highlight a button widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.init_image_frames">
+<span class="sig-name descname"><span class="pre">init_image_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.init_image_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.init_image_frames" title="Link to this definition"></a></dt>
+<dd><p>Initialize the image frames.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.on_enter">
+<span class="sig-name descname"><span class="pre">on_enter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.on_enter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.on_enter" title="Link to this definition"></a></dt>
+<dd><p>Handle the Enter key event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.on_shortcmd">
+<span class="sig-name descname"><span class="pre">on_shortcmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.on_shortcmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.on_shortcmd" title="Link to this definition"></a></dt>
+<dd><p>Handle the key press event for a rating button.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.on_shortcmd_up">
+<span class="sig-name descname"><span class="pre">on_shortcmd_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.on_shortcmd_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.on_shortcmd_up" title="Link to this definition"></a></dt>
+<dd><p>Handle the key release event for a rating button.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.on_tab">
+<span class="sig-name descname"><span class="pre">on_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.on_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.on_tab" title="Link to this definition"></a></dt>
+<dd><p>Handle the tab key event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.remove_highlight">
+<span class="sig-name descname"><span class="pre">remove_highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.remove_highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.remove_highlight" title="Link to this definition"></a></dt>
+<dd><p>Remove the highlight from a button widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.reset_tab">
+<span class="sig-name descname"><span class="pre">reset_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.reset_tab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.reset_tab" title="Link to this definition"></a></dt>
+<dd><p>Reset the tab index and remove the highlight.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.orderings.rating.RatingScreen.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lvl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/views/orderings/rating.html#RatingScreen.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#views.orderings.rating.RatingScreen.submit" title="Link to this definition"></a></dt>
+<dd><p>Submit the rating for a comparison.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-views.orderings">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-views.orderings" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="views.html" class="btn btn-neutral float-left" title="views package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="widgets.html" class="btn btn-neutral float-right" title="widgets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Herman Bergström, Hanna Tärnåsen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
